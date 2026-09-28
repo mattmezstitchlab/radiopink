@@ -2316,6 +2316,10 @@ btnTimeline.addEventListener('click', ()=>{
   openPanel(p.classList.contains('open') ? null : 'timelinePanel');
 });
 
+/* ---------- Init modules ---------- */
+Caption.init();
+Playlist.init();
+
 /* ---------- Playlist panel wiring ---------- */
 document.getElementById('plAdd').addEventListener('click', ()=> document.getElementById('plFiles').click());
 document.getElementById('plFiles').addEventListener('change', e=>{
@@ -2336,7 +2340,7 @@ document.getElementById('plSource').addEventListener('click', ()=>{
   syncPlaylistUI();
 });
 document.getElementById('plClear').addEventListener('click', ()=> Playlist.clear());
-Playlist.listEl.addEventListener('click', e=>{
+document.getElementById('plList').addEventListener('click', e=>{
   const b = e.target.closest('button');
   if(!b) return;
   const i = Number(b.dataset.i), act = b.dataset.act;
@@ -2357,9 +2361,7 @@ document.getElementById('tlSpeed').addEventListener('change', e=>{
   Broadcast.speed = Number(e.target.value) || 48;
 });
 
-/* ---------- Init modules ---------- */
-Caption.init();
-Playlist.init();
+/* ---------- Init UI ---------- */
 renderPlaylistUI();
 syncPlaylistUI();
 syncBroadcastUI();
@@ -2567,7 +2569,43 @@ function animate(){
 }
 animate();
 
+window.__RP_OK = true;
 setTimeout(()=>{ document.getElementById('loader').classList.add('hide'); }, 700);
+</script>
+
+<script>
+/* Filet de sécurité : si le module 3D ne démarre pas (script ou CDN),
+   on ne reste jamais bloqué sur l'écran de chargement. */
+window.addEventListener('error', function(e){
+  var l = document.getElementById('loader');
+  if(!l || l.classList.contains('hide') || window.__RP_OK) return;
+  var m = document.getElementById('ldErr');
+  if(!m){
+    m = document.createElement('div');
+    m.id = 'ldErr';
+    m.style.cssText = 'max-width:440px;padding:0 22px;text-align:center;font-size:11px;line-height:1.9;letter-spacing:.06em;color:#ffb0cb';
+    l.appendChild(m);
+  }
+  m.textContent = 'Erreur au démarrage : ' + (e.message || 'inconnue');
+});
+setTimeout(function(){
+  var l = document.getElementById('loader');
+  if(!l || l.classList.contains('hide')) return;
+  var bar = l.querySelector('.ld-bar');
+  if(bar) bar.style.display = 'none';
+  var m = document.getElementById('ldErr');
+  if(!m){
+    m = document.createElement('div');
+    m.id = 'ldErr';
+    m.style.cssText = 'max-width:440px;padding:0 22px;text-align:center;font-size:11px;line-height:1.9;letter-spacing:.06em;color:rgba(255,190,215,.75)';
+    l.appendChild(m);
+  }
+  if(window.__RP_OK){
+    l.classList.add('hide');
+  } else {
+    m.innerHTML = 'Le moteur 3D tarde à charger (CDN unpkg.com).<br>Vérifiez la connexion puis rechargez la page — <b>Ctrl+F5</b> / <b>Cmd+Shift+R</b>.';
+  }
+}, 4500);
 </script>
 </body>
 </html>
