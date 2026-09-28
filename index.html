@@ -615,9 +615,9 @@ const Music = {
   spectrum(out){
     const n = out.length;
     const live = this.playing ||
-      (typeof Playlist !== 'undefined' && Playlist.playing) ||
-      (typeof Lea !== 'undefined' && Lea.active);
-    if(live && typeof Bus !== 'undefined' && Bus.masterAnalyser){
+      (Playlist.playing) ||
+      (Lea.active);
+    if(live && Bus.masterAnalyser){
       Bus.masterAnalyser.getByteFrequencyData(Bus.masterData);
       const bins = Bus.masterData.length;
       for(let i=0;i<n;i++){
@@ -666,7 +666,7 @@ function loadPreset(key){
     timeline.push({ id:++uid, time, title, dur, color });
   });
   renderTimelineUI();
-  if(typeof Broadcast !== 'undefined') Broadcast.resync();
+  Broadcast.resync();
 }
 const timeline = [];
 
@@ -733,7 +733,7 @@ tlList.addEventListener('input', e=>{
   else if(f === 'title') ev.title = t.value;
   else if(f === 'color') ev.color = t.value;
   renderStripOnly();
-  if(typeof Broadcast !== 'undefined') Broadcast.resync();
+  Broadcast.resync();
 });
 tlList.addEventListener('click', e=>{
   const go = e.target.closest('.tl-go');
@@ -783,7 +783,6 @@ document.getElementById('tlClose').addEventListener('click', ()=>{
   document.getElementById('timelinePanel').classList.remove('open');
   document.getElementById('btnTimeline').classList.remove('active');
 });
-loadPreset('classique');
 
 
 /* ============================================================
@@ -2362,6 +2361,7 @@ document.getElementById('tlSpeed').addEventListener('change', e=>{
 });
 
 /* ---------- Init UI ---------- */
+loadPreset('classique');
 renderPlaylistUI();
 syncPlaylistUI();
 syncBroadcastUI();
