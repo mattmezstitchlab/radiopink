@@ -529,6 +529,57 @@ html,body{
   text-transform:uppercase;cursor:pointer;outline:none;
 }
 
+/* Soundboard & Dédicaces Styles */
+.soundboard-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+}
+.sb-btn{
+  appearance:none;border:1px solid rgba(255,255,255,0.12);
+  background:linear-gradient(145deg, rgba(32,34,44,0.8) 0%, rgba(18,20,26,0.9) 100%);
+  border-radius:14px;padding:12px 6px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  color:#fff;cursor:pointer;transition:.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position:relative;
+}
+.sb-btn:hover{
+  border-color:var(--accent);transform:translateY(-2px);
+  box-shadow:0 6px 16px var(--accent-glow);
+}
+.sb-btn:active{transform:scale(0.95);}
+.sb-icon{font-size:20px;line-height:1;}
+.sb-name{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+.sb-hotkey{
+  position:absolute;top:4px;right:6px;
+  font-size:7.5px;font-weight:800;color:var(--muted);background:rgba(255,255,255,0.08);
+  padding:1px 4px;border-radius:4px;
+}
+
+/* Vocal Guestbook / Dédicaces */
+.record-card{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
+  border-radius:16px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;
+}
+.btn-record-mic{
+  appearance:none;border:none;width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg, #ff3b30 0%, #c1150b 100%);
+  color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:.2s;box-shadow:0 6px 20px rgba(255,59,48,0.4);
+}
+.btn-record-mic.recording{
+  animation:recordPulse 1s infinite alternate ease-in-out;
+  background:#ff3b30;
+}
+@keyframes recordPulse{0%{transform:scale(1);box-shadow:0 0 10px #ff3b30;}100%{transform:scale(1.15);box-shadow:0 0 24px #ff3b30;}}
+.record-timer{font-size:13px;font-weight:700;color:#fff;font-feature-settings:"tnum";}
+
+.dedicace-card{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px;
+}
+.dedicace-meta{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.dedicace-author{font-size:11px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dedicace-time{font-size:8.5px;color:var(--muted);font-weight:600;}
+
 /* Playlist & DeepSeek Components */
 .dropzone-box{
   border:1.5px dashed var(--accent);border-radius:14px;padding:16px 12px;text-align:center;
@@ -691,6 +742,7 @@ html,body{
         <!-- Secondary Pills -->
         <div class="secondary-actions-bar">
           <button class="apple-pill-btn" id="btnToggleMusicPlayback">♫ Musique</button>
+          <button class="apple-pill-btn" id="btnOpenSoundboardQuick">🔔 Jingle</button>
           <button class="apple-pill-btn" id="btnOpenThemePicker">🎨 Thème</button>
           <button class="apple-pill-btn" id="btnCycleSpeedMultiplier">⚡ ×48</button>
         </div>
@@ -720,8 +772,70 @@ html,body{
               <option value="48" selected>Vitesse Journée : ×48</option>
               <option value="120">Vitesse Journée : ×120</option>
             </select>
+            <button class="modal-cta-btn" id="btnExportTimeline">📥 Sauvegarder</button>
+            <button class="modal-cta-btn" id="btnImportTimeline">📤 Charger</button>
+            <input type="file" id="importJsonInput" accept=".json" hidden>
           </div>
           <div id="timelineItemsContainer" style="display:flex;flex-direction:column;gap:8px;"></div>
+        </div>
+      </aside>
+
+      <!-- Drawer: Soundboard & Dédicaces -->
+      <aside class="apple-sheet" id="sheetSoundboard">
+        <div class="sheet-grab-bar"></div>
+        <div class="sheet-top">
+          <h3>🔔 Soundboard &amp; Dédicaces</h3>
+          <button class="sheet-dismiss" data-dismiss="sheetSoundboard">✕</button>
+        </div>
+        <div class="sheet-scroll-area">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);">
+            Effets &amp; Jingles Direct (Raccourcis 1-6)
+          </div>
+          <div class="soundboard-grid">
+            <button class="sb-btn" data-fx="glasses">
+              <span class="sb-hotkey">1</span>
+              <span class="sb-icon">🥂</span>
+              <span class="sb-name">Trinquette</span>
+            </button>
+            <button class="sb-btn" data-fx="cheer">
+              <span class="sb-hotkey">2</span>
+              <span class="sb-icon">👏</span>
+              <span class="sb-name">Applaudissements</span>
+            </button>
+            <button class="sb-btn" data-fx="drumroll">
+              <span class="sb-hotkey">3</span>
+              <span class="sb-icon">🥁</span>
+              <span class="sb-name">Roulement</span>
+            </button>
+            <button class="sb-btn" data-fx="fanfare">
+              <span class="sb-hotkey">4</span>
+              <span class="sb-icon">🎺</span>
+              <span class="sb-name">Fanfare</span>
+            </button>
+            <button class="sb-btn" data-fx="jingle">
+              <span class="sb-hotkey">5</span>
+              <span class="sb-icon">📻</span>
+              <span class="sb-name">Jingle FM</span>
+            </button>
+            <button class="sb-btn" data-fx="sparkle">
+              <span class="sb-hotkey">6</span>
+              <span class="sb-icon">✨</span>
+              <span class="sb-name">Magie</span>
+            </button>
+          </div>
+
+          <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:8px;">
+            Livre d'or Vocal &amp; Dédicaces Invités
+          </div>
+          <div class="record-card">
+            <div style="font-size:11px;font-weight:600;color:var(--muted);">
+              Enregistrez un message vocal pour les mariés
+            </div>
+            <button class="btn-record-mic" id="btnRecordMic">🎙</button>
+            <div class="record-timer" id="recordTimerDisplay">00:00</div>
+            <div style="font-size:9px;color:var(--muted);" id="recordStatusLabel">Appuyez pour enregistrer</div>
+          </div>
+          <div id="dedicacesListContainer" style="display:flex;flex-direction:column;gap:6px;"></div>
         </div>
       </aside>
 
@@ -810,6 +924,10 @@ html,body{
         <button class="watch-tab-btn" data-tab="timeline">
           <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14v11zM7 11h5v5H7z"/></svg>
           <span>Timeline</span>
+        </button>
+        <button class="watch-tab-btn" data-tab="soundboard">
+          <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
+          <span>FX / Voix</span>
         </button>
         <button class="watch-tab-btn" data-tab="playlist">
           <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
@@ -990,6 +1108,315 @@ const Music = {
       return true;
     }
     return false;
+  }
+};
+
+/* ---------- PROCEDURAL SOUNDBOARD (Web Audio Synthesizer) ---------- */
+const Soundboard = {
+  play(fx){
+    Bus.ensure();
+    if(Bus.ctx.state === 'suspended') Bus.ctx.resume();
+    const ctx = Bus.ctx;
+    const now = ctx.currentTime;
+
+    if(fx === 'glasses'){
+      [2400, 3200, 4800].forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq + (Math.random()*40 - 20), now + idx * 0.04);
+        g.gain.setValueAtTime(0.18 / (idx + 1), now + idx * 0.04);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.04 + 1.2);
+        osc.connect(g);
+        g.connect(Bus.speechGain);
+        osc.start(now + idx * 0.04);
+        osc.stop(now + idx * 0.04 + 1.25);
+      });
+    } else if(fx === 'cheer'){
+      const bufferSize = ctx.sampleRate * 2.2;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for(let i = 0; i < bufferSize; i++){
+        data[i] = (Math.random() * 2 - 1) * Math.sin(i / 180) * Math.exp(-i / (ctx.sampleRate * 1.8));
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1200, now);
+      filter.Q.value = 1.2;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.4, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 2.1);
+      noise.connect(filter);
+      filter.connect(g);
+      g.connect(Bus.speechGain);
+      noise.start(now);
+      noise.stop(now + 2.2);
+    } else if(fx === 'drumroll'){
+      const dur = 1.8;
+      const bufferSize = ctx.sampleRate * dur;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for(let i = 0; i < bufferSize; i++){
+        const env = Math.pow(i / bufferSize, 2);
+        data[i] = (Math.random() * 2 - 1) * env;
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'highpass';
+      filter.frequency.value = 800;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.35, now);
+      noise.connect(filter);
+      filter.connect(g);
+      g.connect(Bus.speechGain);
+      noise.start(now);
+
+      setTimeout(()=>{
+        if(!Bus.ctx) return;
+        const cNow = Bus.ctx.currentTime;
+        const cOsc = Bus.ctx.createOscillator();
+        const cG = Bus.ctx.createGain();
+        cOsc.type = 'triangle';
+        cOsc.frequency.setValueAtTime(160, cNow);
+        cOsc.frequency.exponentialRampToValueAtTime(40, cNow + 0.5);
+        cG.gain.setValueAtTime(0.7, cNow);
+        cG.gain.exponentialRampToValueAtTime(0.001, cNow + 0.6);
+        cOsc.connect(cG);
+        cG.connect(Bus.speechGain);
+        cOsc.start(cNow);
+        cOsc.stop(cNow + 0.65);
+      }, (dur - 0.05)*1000);
+    } else if(fx === 'fanfare'){
+      const notes = [261.63, 329.63, 392.00, 523.25];
+      notes.forEach((freq, idx)=>{
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+        const fDur = idx === notes.length - 1 ? 0.9 : 0.15;
+        g.gain.setValueAtTime(0.18, now + idx * 0.12);
+        g.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.12 + fDur);
+        osc.connect(g);
+        g.connect(Bus.speechGain);
+        osc.start(now + idx * 0.12);
+        osc.stop(now + idx * 0.12 + fDur + 0.05);
+      });
+    } else if(fx === 'jingle'){
+      const chimes = [739.99, 880.00, 1108.73, 1318.51];
+      chimes.forEach((freq, idx)=>{
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.11);
+        g.gain.setValueAtTime(0.25, now + idx * 0.11);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.11 + 1.1);
+        osc.connect(g);
+        g.connect(Bus.speechGain);
+        osc.start(now + idx * 0.11);
+        osc.stop(now + idx * 0.11 + 1.15);
+      });
+    } else if(fx === 'sparkle'){
+      for(let i = 0; i < 10; i++){
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1200 + Math.random() * 2400, now + i * 0.05);
+        g.gain.setValueAtTime(0.12, now + i * 0.05);
+        g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.05 + 0.35);
+        osc.connect(g);
+        g.connect(Bus.speechGain);
+        osc.start(now + i * 0.05);
+        osc.stop(now + i * 0.05 + 0.4);
+      }
+    }
+  }
+};
+
+/* ---------- VOCAL GUESTBOOK & DÉDICACES ---------- */
+const Dedicaces = {
+  items: [],
+  mediaRecorder: null,
+  audioChunks: [],
+  recordingStartTime: 0,
+  recordTimerId: null,
+
+  init(){
+    try {
+      const saved = localStorage.getItem('rp_dedicaces');
+      if(saved) this.items = JSON.parse(saved);
+    } catch(e){}
+    this.render();
+  },
+
+  save(){
+    try {
+      localStorage.setItem('rp_dedicaces', JSON.stringify(this.items));
+    } catch(e){}
+  },
+
+  async startRecord(){
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+      alert("L'enregistrement microphone n'est pas supporté sur ce navigateur.");
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      this.audioChunks = [];
+      this.mediaRecorder = new MediaRecorder(stream);
+      this.mediaRecorder.ondataavailable = e => {
+        if(e.data.size > 0) this.audioChunks.push(e.data);
+      };
+      this.mediaRecorder.onstop = () => this.processRecording();
+      this.mediaRecorder.start();
+
+      this.recordingStartTime = Date.now();
+      const btn = document.getElementById('btnRecordMic');
+      const label = document.getElementById('recordStatusLabel');
+      if(btn) btn.classList.add('recording');
+      if(label) label.textContent = 'Enregistrement en cours… Appuyez pour stopper';
+
+      this.recordTimerId = setInterval(()=>{
+        const el = document.getElementById('recordTimerDisplay');
+        if(!el) return;
+        const diff = Math.floor((Date.now() - this.recordingStartTime) / 1000);
+        const m = String(Math.floor(diff / 60)).padStart(2, '0');
+        const s = String(diff % 60).padStart(2, '0');
+        el.textContent = m + ':' + s;
+      }, 500);
+    } catch(err){
+      console.error(err);
+      alert("Impossible d'accéder au micro : " + err.message);
+    }
+  },
+
+  stopRecord(){
+    if(this.mediaRecorder && this.mediaRecorder.state !== 'inactive'){
+      this.mediaRecorder.stop();
+      this.mediaRecorder.stream.getTracks().forEach(t => t.stop());
+    }
+    clearInterval(this.recordTimerId);
+    const btn = document.getElementById('btnRecordMic');
+    const label = document.getElementById('recordStatusLabel');
+    const timer = document.getElementById('recordTimerDisplay');
+    if(btn) btn.classList.remove('recording');
+    if(label) label.textContent = 'Enregistrement terminé';
+    if(timer) timer.textContent = '00:00';
+  },
+
+  processRecording(){
+    const blob = new Blob(this.audioChunks, { type: 'audio/webm;codecs=opus' });
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64Audio = reader.result;
+      const author = prompt("Nom de l'invité / Auteur de la dédicace :", "Un invité") || "Invité anonyme";
+      this.items.unshift({
+        id: Date.now(),
+        author: author,
+        date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        audioData: base64Audio
+      });
+      this.save();
+      this.render();
+      Soundboard.play('jingle');
+    };
+    reader.readAsDataURL(blob);
+  },
+
+  playDedicace(id){
+    const item = this.items.find(x => x.id === id);
+    if(!item || !item.audioData) return;
+    Bus.ensure();
+    Bus.duck(true);
+    const audio = new Audio(item.audioData);
+    const source = Bus.ctx.createMediaElementSource(audio);
+    source.connect(Bus.speechGain);
+    audio.play();
+    audio.onended = () => Bus.duck(false);
+  },
+
+  removeDedicace(id){
+    this.items = this.items.filter(x => x.id !== id);
+    this.save();
+    this.render();
+  },
+
+  render(){
+    const container = document.getElementById('dedicacesListContainer');
+    if(!container) return;
+    if(!this.items.length){
+      container.innerHTML = '<div style="font-size:10px;color:var(--muted);text-align:center;padding:8px;">Aucune dédicace pour le moment.</div>';
+      return;
+    }
+    container.innerHTML = this.items.map(item => `
+      <div class="dedicace-card">
+        <div class="dedicace-meta">
+          <div class="dedicace-author">🎤 ${item.author}</div>
+          <div class="dedicace-time">Enregistré à ${item.date}</div>
+        </div>
+        <button class="tl-action-icon" data-playdedicace="${item.id}" title="Écouter">▶</button>
+        <button class="tl-action-icon del" data-deldedicace="${item.id}" title="Supprimer">✕</button>
+      </div>
+    `).join('');
+  }
+};
+
+/* ---------- MEDIA SESSION & WAKELOCK ---------- */
+const MediaSessionManager = {
+  init(){
+    if('mediaSession' in navigator){
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: 'Mon Mariage FM',
+        artist: 'Léa en Direct (104.2 MHz)',
+        album: 'Jour J · Mon Mariage'
+      });
+      navigator.mediaSession.setActionHandler('play', () => Broadcast.start());
+      navigator.mediaSession.setActionHandler('pause', () => Broadcast.stop());
+      navigator.mediaSession.setActionHandler('previoustrack', () => {
+        const sorted = Broadcast.sorted();
+        if(!sorted.length) return;
+        const cur = Broadcast.currentEvent();
+        const idx = sorted.findIndex(e => e === cur);
+        const prevIdx = idx > 0 ? idx - 1 : sorted.length - 1;
+        Broadcast.jumpTo(sorted[prevIdx].id);
+      });
+      navigator.mediaSession.setActionHandler('nexttrack', () => {
+        const sorted = Broadcast.sorted();
+        if(!sorted.length) return;
+        const cur = Broadcast.currentEvent();
+        const idx = sorted.findIndex(e => e === cur);
+        const nextIdx = (idx + 1) % sorted.length;
+        Broadcast.jumpTo(sorted[nextIdx].id);
+      });
+    }
+  },
+  update(title, artist){
+    if('mediaSession' in navigator){
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: title || 'Mon Mariage FM',
+        artist: artist || 'Léa en Direct · 104.2 MHz',
+        album: 'Jour J · Mon Mariage'
+      });
+    }
+  }
+};
+
+const WakeLockManager = {
+  lock: null,
+  async request(){
+    if('wakeLock' in navigator){
+      try {
+        this.lock = await navigator.wakeLock.request('screen');
+      } catch(e){}
+    }
+  },
+  release(){
+    if(this.lock){
+      this.lock.release();
+      this.lock = null;
+    }
   }
 };
 
@@ -1798,18 +2225,86 @@ document.querySelectorAll('.watch-tab-btn[data-tab]').forEach(tab => {
     tab.classList.add('active');
     if(t === 'radio') closeAllModals();
     else if(t === 'timeline') openModal('sheetTimeline');
+    else if(t === 'soundboard') openModal('sheetSoundboard');
     else if(t === 'playlist') openModal('sheetPlaylist');
     else if(t === 'deepseek') openModal('sheetDeepseek');
   });
 });
 
-// Theme button
+// Quick FX & Theme button
+document.getElementById('btnOpenSoundboardQuick').addEventListener('click', ()=> openModal('sheetSoundboard'));
 document.getElementById('btnOpenThemePicker').addEventListener('click', ()=> openModal('sheetTheme'));
 
 // Sheet Closes
 document.getElementById('modalOverlay').addEventListener('click', closeAllModals);
 document.querySelectorAll('.sheet-dismiss, .sheet-grab-bar').forEach(btn => {
   btn.addEventListener('click', closeAllModals);
+});
+
+// Soundboard FX Buttons
+document.querySelectorAll('.sb-btn').forEach(btn => {
+  btn.addEventListener('click', ()=>{
+    const fx = btn.dataset.fx;
+    if(fx) Soundboard.play(fx);
+  });
+});
+
+// Vocal Guestbook Mic Record
+const recordBtn = document.getElementById('btnRecordMic');
+if(recordBtn){
+  recordBtn.addEventListener('click', ()=>{
+    if(Dedicaces.mediaRecorder && Dedicaces.mediaRecorder.state === 'recording'){
+      Dedicaces.stopRecord();
+    } else {
+      Dedicaces.startRecord();
+    }
+  });
+}
+
+// Dedicaces list actions
+document.getElementById('dedicacesListContainer').addEventListener('click', e=>{
+  const playBtn = e.target.closest('[data-playdedicace]');
+  if(playBtn){
+    Dedicaces.playDedicace(Number(playBtn.dataset.playdedicace));
+    return;
+  }
+  const delBtn = e.target.closest('[data-deldedicace]');
+  if(delBtn){
+    Dedicaces.removeDedicace(Number(delBtn.dataset.deldedicace));
+  }
+});
+
+// Timeline Export & Import JSON
+document.getElementById('btnExportTimeline').addEventListener('click', ()=>{
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(timeline, null, 2));
+  const dlAnchor = document.createElement('a');
+  dlAnchor.setAttribute("href", dataStr);
+  dlAnchor.setAttribute("download", "mon-mariage-timeline.json");
+  dlAnchor.click();
+});
+
+const importInput = document.getElementById('importJsonInput');
+document.getElementById('btnImportTimeline').addEventListener('click', ()=> importInput.click());
+importInput.addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const parsed = JSON.parse(ev.target.result);
+      if(Array.isArray(parsed)){
+        timeline.length = 0;
+        parsed.forEach(item => timeline.push(item));
+        Broadcast.resync();
+        renderTimelineUI();
+        renderTimelineStrip();
+        updateCurMomentDisplay();
+      }
+    } catch(err){
+      alert("Fichier JSON invalide.");
+    }
+  };
+  reader.readAsText(file);
 });
 
 // Theme Picker
@@ -1911,8 +2406,17 @@ window.addEventListener('keydown', e=>{
   const k = e.key.toLowerCase();
   if(k === 'm') MusicSource.toggle();
   if(k === 't') openModal('sheetTimeline');
+  if(k === 'f' || k === 's') openModal('sheetSoundboard');
   if(k === 'p') openModal('sheetPlaylist');
   if(k === 'd') openModal('sheetDeepseek');
+
+  // Hotkeys 1-6 for soundboard
+  if(e.key === '1') Soundboard.play('glasses');
+  if(e.key === '2') Soundboard.play('cheer');
+  if(e.key === '3') Soundboard.play('drumroll');
+  if(e.key === '4') Soundboard.play('fanfare');
+  if(e.key === '5') Soundboard.play('jingle');
+  if(e.key === '6') Soundboard.play('sparkle');
 });
 
 /* ---------- MAIN RENDER ANIMATION LOOP ---------- */
@@ -1950,6 +2454,8 @@ function appLoop(now){
 /* ---------- BOOTSTRAP INITIALIZATION ---------- */
 Caption.init();
 Playlist.init();
+Dedicaces.init();
+MediaSessionManager.init();
 loadPreset('classique');
 syncPlaylistUI();
 syncBroadcastUI();
