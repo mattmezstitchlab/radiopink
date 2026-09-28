@@ -326,8 +326,8 @@ canvas{display:block;width:100%;height:100%;touch-action:none;}
 <script type="importmap">
 {
   "imports": {
-    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    "three": "./vendor/three/build/three.module.js",
+    "three/addons/": "./vendor/three/examples/jsm/"
   }
 }
 </script>
@@ -2603,9 +2603,9 @@ setTimeout(function(){
   if(window.__RP_OK){
     l.classList.add('hide');
   } else {
-    m.innerHTML = 'Le moteur 3D tarde à charger (CDN unpkg.com).<br>Vérifiez la connexion puis rechargez la page — <b>Ctrl+F5</b> / <b>Cmd+Shift+R</b>.';
+    m.innerHTML = 'Le moteur 3D tarde à démarrer.<br>Rechargez la page avec <b>Ctrl+F5</b> / <b>Cmd+Shift+R</b>.';
   }
-}, 4500);
+}, 9000);
 </script>
 </body>
 </html>
