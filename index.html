@@ -128,6 +128,79 @@ canvas{display:block;width:100%;height:100%;touch-action:none;}
 .tl-btn:hover{background:rgba(255,79,154,.22);border-color:rgba(255,79,154,.5);color:#fff;}
 .tl-note{margin-top:11px;font-size:8.4px;line-height:1.9;letter-spacing:.12em;text-transform:uppercase;color:rgba(233,228,220,.3);}
 
+/* ---------- DIRECT / SOUS-TITRES ---------- */
+#captionBar{
+  position:fixed;left:50%;bottom:64px;transform:translateX(-50%) translateY(14px);
+  z-index:15;display:flex;align-items:center;gap:11px;max-width:min(720px,86vw);
+  background:rgba(16,17,21,0.82);backdrop-filter:blur(18px) saturate(150%);
+  -webkit-backdrop-filter:blur(18px) saturate(150%);
+  border:1px solid rgba(255,79,154,0.35);border-radius:14px;padding:10px 16px;
+  opacity:0;pointer-events:none;transition:.4s cubic-bezier(.2,.7,.3,1);
+}
+#captionBar.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.cap-who{flex:0 0 auto;font-size:8.5px;letter-spacing:.22em;font-weight:800;color:#ffb7d5;
+  border-right:1px solid rgba(255,79,154,.35);padding-right:11px;text-transform:uppercase;line-height:1.5;}
+.cap-text{font-size:12.5px;line-height:1.55;color:rgba(240,234,226,0.94);font-weight:500;}
+.btn.primary{background:rgba(255,79,154,.16);border-color:rgba(255,79,154,.6);color:#ffd9e9;}
+.btn.primary.active{background:var(--pink);border-color:#ff8fc0;color:#fff;animation:onair 1.6s ease-in-out infinite;}
+@keyframes onair{0%,100%{box-shadow:0 0 0 rgba(255,79,154,0);}50%{box-shadow:0 0 22px rgba(255,79,154,.55);}}
+
+/* ---------- PANNEAUX LATÉRAUX (playlist / deepseek) ---------- */
+.sidep{
+  position:fixed;top:22px;right:22px;width:322px;z-index:20;
+  max-height:calc(100vh - 150px);overflow:auto;
+  background:rgba(16,17,21,0.78);backdrop-filter:blur(20px) saturate(150%);
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  border:1px solid var(--line);border-radius:18px;padding:16px 15px 15px;
+  transform:translateX(120%);opacity:0;transition:.5s cubic-bezier(.2,.75,.25,1);
+  scrollbar-width:thin;scrollbar-color:rgba(255,79,154,.5) transparent;
+}
+.sidep.open{transform:translateX(0);opacity:1;}
+.sidep::-webkit-scrollbar{width:5px;}
+.sidep::-webkit-scrollbar-thumb{background:rgba(255,79,154,.45);border-radius:8px;}
+.tl-live{
+  font-size:9.5px;letter-spacing:.16em;font-weight:800;text-transform:uppercase;
+  color:rgba(233,228,220,.4);margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.tl-live .dot{flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor;}
+.tl-live.live{color:#ff8fb8;}
+.tl-live.live .dot{animation:blinkdot 1s infinite;}
+@keyframes blinkdot{50%{opacity:.25;}}
+.tl-go,.tl-ds{
+  appearance:none;flex:0 0 auto;width:26px;height:26px;border-radius:8px;cursor:pointer;font-size:11px;line-height:1;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(233,228,220,.75);padding:0;
+}
+.tl-go:hover{background:rgba(110,225,255,.18);border-color:rgba(110,225,255,.45);color:#bdefff;}
+.tl-ds:hover{background:rgba(255,220,130,.15);border-color:rgba(255,220,130,.4);color:#ffe9ad;}
+.tl-ds.has{background:rgba(255,220,130,.22);border-color:rgba(255,220,130,.55);color:#ffe9ad;}
+.tl-select{
+  appearance:none;background:rgba(0,0,0,.32);border:1px solid rgba(255,255,255,.12);color:#f2ede6;
+  border-radius:10px;padding:9px 10px;font-size:9.5px;letter-spacing:.14em;font-weight:700;text-transform:uppercase;
+  cursor:pointer;flex:1 1 auto;outline:none;
+}
+.tl-select:focus{border-color:rgba(255,79,154,.6);}
+.pl-row{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.07);border-radius:11px;padding:8px 9px;margin-bottom:7px;transition:.25s;}
+.pl-row:hover{border-color:rgba(255,79,154,.3);}
+.pl-row.playing{background:rgba(255,79,154,.12);border-color:rgba(255,79,154,.45);}
+.pl-idx{flex:0 0 auto;font-size:10px;color:rgba(255,150,190,.9);width:15px;text-align:center;font-weight:700;}
+.pl-name{flex:1 1 auto;font-size:11px;font-weight:600;color:rgba(240,234,226,.92);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pl-dur{flex:0 0 auto;font-size:9px;letter-spacing:.1em;color:rgba(233,228,220,.45);}
+.pl-row button{appearance:none;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  color:rgba(233,228,220,.7);width:22px;height:22px;border-radius:6px;cursor:pointer;font-size:9px;padding:0;line-height:1;flex:0 0 auto;}
+.pl-row button:hover{background:rgba(255,79,154,.22);color:#fff;}
+.pl-row button:disabled{opacity:.25;cursor:default;}
+.pl-drop{border:1.5px dashed rgba(255,79,154,.35);border-radius:12px;padding:14px 10px;text-align:center;
+  font-size:8.6px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,190,215,.55);margin-bottom:12px;transition:.25s;}
+.pl-drop.over{background:rgba(255,79,154,.12);border-color:rgba(255,79,154,.7);color:#ffd9e9;}
+.ds-field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px;}
+.ds-field label{font-size:8.4px;letter-spacing:.2em;text-transform:uppercase;color:rgba(233,228,220,.42);font-weight:700;}
+.ds-field input{background:rgba(0,0,0,.32);border:1px solid rgba(255,255,255,.1);color:#f2ede6;
+  border-radius:9px;padding:8px 10px;font-size:11.5px;outline:none;font-weight:600;transition:.25s;font-family:inherit;}
+.ds-field input:focus{border-color:rgba(255,79,154,.6);box-shadow:0 0 0 3px rgba(255,79,154,.14);}
+#dsStatus{font-size:9.5px;letter-spacing:.06em;line-height:1.7;color:rgba(255,200,225,.8);margin-top:10px;min-height:16px;}
+#dsStatus.err{color:#ff9d9d;}
+
 #loader{
   position:fixed;inset:0;z-index:50;background:#0b0c0e;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;
@@ -140,8 +213,9 @@ canvas{display:block;width:100%;height:100%;touch-action:none;}
 @keyframes sweep{0%{left:-40%}100%{left:100%}}
 
 @media (max-width:820px){
-  #timelinePanel{top:auto;bottom:0;right:0;left:0;width:100%;max-height:56vh;border-radius:18px 18px 0 0;transform:translateY(110%);}
-  #timelinePanel.open{transform:translateY(0);}
+  #timelinePanel,.sidep{top:auto;bottom:0;right:0;left:0;width:100%;max-height:56vh;border-radius:18px 18px 0 0;transform:translateY(110%);}
+  #timelinePanel.open,.sidep.open{transform:translateY(0);}
+  #captionBar{bottom:76px;}
 }
 @media (max-width:720px){
   .brand{top:16px;left:16px;}
@@ -166,9 +240,11 @@ canvas{display:block;width:100%;height:100%;touch-action:none;}
 </div>
 
 <div class="panel">
+  <button class="btn primary" id="btnDirect">● En Direct</button>
+  <button class="btn" id="btnPlaylist">♫ Playlist</button>
+  <button class="btn active" id="btnTimeline">Timeline Jour J</button>
+  <button class="btn" id="btnDeepseek">✨ DeepSeek</button>
   <button class="btn active" id="btnRotate">Auto Rotate</button>
-  <button class="btn" id="btnMusic">▶ Musique</button>
-  <button class="btn" id="btnTimeline">Timeline Jour J</button>
   <button class="btn" id="btnMix">Mixer les finitions</button>
   <button class="btn" id="btnLight">Éclairage Studio</button>
   <button class="btn" id="btnReset">Recentrer</button>
@@ -177,7 +253,7 @@ canvas{display:block;width:100%;height:100%;touch-action:none;}
 <div class="hint">
   <div><b>Drag</b> &nbsp;— orbite caméra</div>
   <div><b>Scroll</b> — zoom · <b>Drag dial</b> — tuner</div>
-  <div><b>Clic</b> — boutons &nbsp;·&nbsp; <b>Espace</b> — play &nbsp;·&nbsp; <b>M</b> — musique</div>
+  <div><b>Espace</b> — direct · <b>P</b> — playlist · <b>M</b> — musique</div>
 </div>
 
 <aside id="timelinePanel">
@@ -186,6 +262,7 @@ canvas{display:block;width:100%;height:100%;touch-action:none;}
     <button class="tl-close" id="tlClose">×</button>
   </div>
   <div class="tl-sub">Configuration en direct de l'écran LCD</div>
+  <div class="tl-live" id="tlLive"><span class="dot"></span><span id="tlLiveTxt">Direct arrêté — appuyez sur ● En Direct</span></div>
   <div class="tl-strip" id="tlStrip"><div class="tl-cursor" id="tlCursor"></div></div>
   <div class="tl-list" id="tlList"></div>
   <div class="tl-actions">
@@ -194,8 +271,52 @@ canvas{display:block;width:100%;height:100%;touch-action:none;}
     <button class="tl-btn" id="tlPreset2">Intime</button>
     <button class="tl-btn" id="tlPreset3">Festif</button>
   </div>
-  <div class="tl-note">Les horaires, durées, titres et couleurs sont appliqués instantanément à l'afficheur de la radio principale.</div>
+  <div class="tl-actions">
+    <select class="tl-select" id="tlSpeed" title="Vitesse d'écoulement de la journée">
+      <option value="24">Journée · ×24</option>
+      <option value="48" selected>Journée · ×48</option>
+      <option value="120">Journée · ×120</option>
+    </select>
+  </div>
+  <div class="tl-note">▶ diffuse ce moment à l'antenne · ✨ script DeepSeek · tout est appliqué instantanément à l'afficheur et au direct.</div>
 </aside>
+
+<aside id="playlistPanel" class="sidep">
+  <div class="tl-head">
+    <h2>Playlist · Musiques</h2>
+    <button class="tl-close" data-close="playlistPanel">×</button>
+  </div>
+  <div class="tl-sub">Vos titres passent à l'antenne entre les interventions</div>
+  <div class="pl-drop" id="plDrop">Glissez-déposez vos fichiers audio ici</div>
+  <div id="plList"></div>
+  <div class="tl-actions">
+    <button class="tl-btn" id="plAdd">＋ Ajouter des titres</button>
+    <button class="tl-btn" id="plPlay">▶ Musique seule</button>
+  </div>
+  <div class="tl-actions">
+    <button class="tl-btn" id="plSource">Source : Playlist</button>
+    <button class="tl-btn" id="plClear">Vider</button>
+  </div>
+  <input type="file" id="plFiles" accept="audio/*" multiple hidden>
+  <div class="tl-note">MP3 · M4A · WAV · OGG — lus en local, rien n'est envoyé sur Internet. Playlist vide ? La session synthé « Néo-Romantique » de la radio assure le direct.</div>
+</aside>
+
+<aside id="dsPanel" class="sidep">
+  <div class="tl-head">
+    <h2>✨ DeepSeek · Animatrice</h2>
+    <button class="tl-close" data-close="dsPanel">×</button>
+  </div>
+  <div class="tl-sub">DeepSeek rédige les interventions de Léa en direct</div>
+  <div class="ds-field"><label>Clé API DeepSeek (sk-…)</label><input type="password" id="dsKey" placeholder="sk-…" autocomplete="off"></div>
+  <div class="ds-field"><label>Prénoms des marié·e·s</label><input type="text" id="dsNames" placeholder="Camille &amp; Thomas" maxlength="46"></div>
+  <div class="ds-field"><label>Date</label><input type="text" id="dsDate" placeholder="Samedi 12 juin 2027" maxlength="46"></div>
+  <div class="ds-field"><label>Lieu</label><input type="text" id="dsPlace" placeholder="Domaine de Longchamp" maxlength="46"></div>
+  <div class="tl-actions"><button class="tl-btn" id="dsGen">✨ Générer les scripts du jour J</button></div>
+  <div id="dsStatus">Sans clé, la voix studio enregistrée de Léa est utilisée.</div>
+  <div class="tl-note">DeepSeek écrit une intervention personnalisée pour chaque moment (titres modifiés compris), avec les infos du mariage. La clé reste stockée dans votre navigateur uniquement. Les scripts ✨ sont lus par la voix système du navigateur.</div>
+</aside>
+
+<div id="captionBar"><span class="cap-who">Léa · à l'antenne</span><span class="cap-text" id="capText"></span></div>
 
 <div id="loader">
   <div class="ld-title">Mon Mariage · Radio</div>
@@ -330,6 +451,54 @@ function labelTexture(text, color, tracking=5, fontPx=44, w=1024, h=160, align='
 }
 
 /* ============================================================
+   AUDIO BUS — graphe audio partagé (synthé / playlist / voix Léa)
+============================================================ */
+const Bus = {
+  ctx:null, comp:null, masterAnalyser:null, masterData:null,
+  musicGain:null, speechGain:null, speechAnalyser:null, speechData:null,
+  ensure(){
+    if(this.ctx) return;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    this.ctx = new AC();
+    this.comp = this.ctx.createDynamicsCompressor();
+    this.comp.threshold.value = -14; this.comp.ratio.value = 6;
+    this.masterAnalyser = this.ctx.createAnalyser();
+    this.masterAnalyser.fftSize = 256; this.masterAnalyser.smoothingTimeConstant = 0.82;
+    this.masterData = new Uint8Array(this.masterAnalyser.frequencyBinCount);
+    this.musicGain = this.ctx.createGain(); this.musicGain.gain.value = 1;
+    this.speechGain = this.ctx.createGain(); this.speechGain.gain.value = 1.2;
+    this.speechAnalyser = this.ctx.createAnalyser();
+    this.speechAnalyser.fftSize = 512; this.speechAnalyser.smoothingTimeConstant = 0.5;
+    this.speechData = new Uint8Array(this.speechAnalyser.frequencyBinCount);
+    // réverbération (musique uniquement)
+    const reverb = this.ctx.createConvolver();
+    const len = this.ctx.sampleRate * 1.6;
+    const buf = this.ctx.createBuffer(2, len, this.ctx.sampleRate);
+    for(let ch=0; ch<2; ch++){
+      const arr = buf.getChannelData(ch);
+      for(let i=0;i<len;i++) arr[i] = (Math.random()*2-1) * Math.pow(1 - i/len, 2.6);
+    }
+    reverb.buffer = buf;
+    const wet = this.ctx.createGain(); wet.gain.value = 0.16;
+    this.musicGain.connect(this.comp);
+    this.musicGain.connect(reverb); reverb.connect(wet); wet.connect(this.comp);
+    this.speechGain.connect(this.comp);
+    this.speechGain.connect(this.speechAnalyser);
+    this.comp.connect(this.masterAnalyser);
+    this.masterAnalyser.connect(this.ctx.destination);
+  },
+  ramp(node, v, s){
+    if(!this.ctx || !node) return;
+    s = s || 0.4;
+    const t = this.ctx.currentTime;
+    node.gain.cancelScheduledValues(t);
+    node.gain.setValueAtTime(Math.max(0.0001, node.gain.value), t);
+    node.gain.exponentialRampToValueAtTime(Math.max(0.0001, v), t + s);
+  },
+  duck(on){ this.ramp(this.musicGain, on ? 0.14 : 1, on ? 0.35 : 0.9); }
+};
+
+/* ============================================================
    MUSIC ENGINE (Web Audio) + SPECTRUM
 ============================================================ */
 const Music = {
@@ -343,26 +512,12 @@ const Music = {
   ],
   init(){
     if(this.ctx) return;
-    const AC = window.AudioContext || window.webkitAudioContext;
-    this.ctx = new AC();
+    Bus.ensure();
+    this.ctx = Bus.ctx;
     this.master = this.ctx.createGain(); this.master.gain.value = 0.0001;
-    this.comp = this.ctx.createDynamicsCompressor();
-    this.comp.threshold.value = -14; this.comp.ratio.value = 6;
-    this.analyser = this.ctx.createAnalyser();
-    this.analyser.fftSize = 256; this.analyser.smoothingTimeConstant = 0.82;
-    this.data = new Uint8Array(this.analyser.frequencyBinCount);
-    const reverb = this.ctx.createConvolver();
-    const len = this.ctx.sampleRate * 1.6;
-    const buf = this.ctx.createBuffer(2, len, this.ctx.sampleRate);
-    for(let ch=0; ch<2; ch++){
-      const arr = buf.getChannelData(ch);
-      for(let i=0;i<len;i++) arr[i] = (Math.random()*2-1) * Math.pow(1 - i/len, 2.6);
-    }
-    reverb.buffer = buf;
-    const wet = this.ctx.createGain(); wet.gain.value = 0.16;
-    this.master.connect(this.comp);
-    this.master.connect(reverb); reverb.connect(wet); wet.connect(this.comp);
-    this.comp.connect(this.analyser); this.analyser.connect(this.ctx.destination);
+    this.master.connect(Bus.musicGain);
+    this.analyser = Bus.masterAnalyser;
+    this.data = Bus.masterData;
     // noise buffer
     const nl = this.ctx.sampleRate * 1.2;
     this.noise = this.ctx.createBuffer(1, nl, this.ctx.sampleRate);
@@ -459,12 +614,15 @@ const Music = {
   },
   spectrum(out){
     const n = out.length;
-    if(this.playing && this.analyser){
-      this.analyser.getByteFrequencyData(this.data);
-      const bins = this.data.length;
+    const live = this.playing ||
+      (typeof Playlist !== 'undefined' && Playlist.playing) ||
+      (typeof Lea !== 'undefined' && Lea.active);
+    if(live && typeof Bus !== 'undefined' && Bus.masterAnalyser){
+      Bus.masterAnalyser.getByteFrequencyData(Bus.masterData);
+      const bins = Bus.masterData.length;
       for(let i=0;i<n;i++){
         const idx = Math.floor(Math.pow(i/n, 1.35) * (bins*0.72));
-        out[i] = this.data[Math.min(bins-1, idx)]/255;
+        out[i] = Bus.masterData[Math.min(bins-1, idx)]/255;
       }
       return true;
     }
@@ -508,6 +666,7 @@ function loadPreset(key){
     timeline.push({ id:++uid, time, title, dur, color });
   });
   renderTimelineUI();
+  if(typeof Broadcast !== 'undefined') Broadcast.resync();
 }
 const timeline = [];
 
@@ -529,6 +688,8 @@ function renderTimelineUI(){
         <input class="tl-color" type="color" value="${ev.color}" data-id="${ev.id}" data-f="color">
         <input class="tl-time" type="time" value="${ev.time}" data-id="${ev.id}" data-f="time">
         <input class="tl-title" type="text" value="${ev.title}" data-id="${ev.id}" data-f="title" maxlength="26">
+        <button class="tl-go" data-go="${ev.id}" title="Diffuser ce moment à l'antenne">▶</button>
+        <button class="tl-ds${ev.dsScript ? ' has' : ''}" data-ds="${ev.id}" title="Script DeepSeek pour ce moment">✨</button>
         <button class="tl-del" data-del="${ev.id}">×</button>
       </div>
       <div class="tl-bot">
@@ -551,7 +712,9 @@ function renderTimelineUI(){
       seg.style.left = ((s-min)/span*100) + '%';
       seg.style.width = Math.max(2.2,(ev.dur/span*100)) + '%';
       seg.style.background = ev.color;
-      seg.title = ev.time + ' · ' + ev.title;
+      seg.style.cursor = 'pointer';
+      seg.title = ev.time + ' · ' + ev.title + ' — clic : diffuser';
+      seg.dataset.go = ev.id;
       tlStrip.appendChild(seg);
     });
     tlStrip.dataset.min = min;
@@ -570,13 +733,22 @@ tlList.addEventListener('input', e=>{
   else if(f === 'title') ev.title = t.value;
   else if(f === 'color') ev.color = t.value;
   renderStripOnly();
+  if(typeof Broadcast !== 'undefined') Broadcast.resync();
 });
 tlList.addEventListener('click', e=>{
+  const go = e.target.closest('.tl-go');
+  if(go){ Broadcast.jumpTo(go.dataset.go); return; }
+  const ds = e.target.closest('.tl-ds');
+  if(ds){ DS.generate([Number(ds.dataset.ds)]); return; }
   const id = e.target.dataset && e.target.dataset.del;
   if(id){
     const idx = timeline.findIndex(x=>x.id === Number(id));
-    if(idx >= 0){ timeline.splice(idx,1); renderTimelineUI(); }
+    if(idx >= 0){ timeline.splice(idx,1); renderTimelineUI(); Broadcast.resync(); }
   }
+});
+tlStrip.addEventListener('click', e=>{
+  const seg = e.target.closest('.tl-seg');
+  if(seg && seg.dataset.go) Broadcast.jumpTo(seg.dataset.go);
 });
 function renderStripOnly(){
   const rows = Array.from(tlStrip.querySelectorAll('.tl-seg'));
@@ -593,13 +765,16 @@ function renderStripOnly(){
     seg.style.left = ((s-min)/span*100)+'%';
     seg.style.width = Math.max(2.2,(ev.dur/span*100))+'%';
     seg.style.background = ev.color;
+    seg.style.cursor = 'pointer';
+    seg.title = ev.time + ' · ' + ev.title + ' — clic : diffuser';
+    seg.dataset.go = ev.id;
     tlStrip.appendChild(seg);
   });
   tlStrip.dataset.min = min; tlStrip.dataset.span = span;
 }
 document.getElementById('tlAdd').addEventListener('click', ()=>{
   timeline.push({ id:++uid, time: fmtMin(12*60 + timeline.length*60), title:'NOUVEAU MOMENT', dur:60, color:'#ff4f9a' });
-  renderTimelineUI();
+  renderTimelineUI(); Broadcast.resync();
 });
 document.getElementById('tlPreset1').addEventListener('click', ()=>loadPreset('classique'));
 document.getElementById('tlPreset2').addEventListener('click', ()=>loadPreset('intime'));
@@ -609,6 +784,517 @@ document.getElementById('tlClose').addEventListener('click', ()=>{
   document.getElementById('btnTimeline').classList.remove('active');
 });
 loadPreset('classique');
+
+
+/* ============================================================
+   LÉA — SCRIPTS STUDIO (vraie voix pré-enregistrée)
+   audio/lea/*.mp3 — voix humaine enregistrée, pas de synthèse
+============================================================ */
+const LEA_CLIPS = {
+  intro:{ f:'audio/lea/intro.mp3', t:"Bonjour, bonjour ! Vous êtes bien sur Radio Mon Mariage, la radio qui n'émet qu'une seule journée par an… mais quelle journée ! Moi c'est Léa, votre animatrice, et je reste avec vous du premier café jusqu'au dernier slow. Mariés, familles, témoins, cousins lointains et invités surprises : bienvenue à toutes et à tous ! Installez-vous, montez un peu le son, et laissez-moi vous raconter ce grand jour, moment par moment. C'est parti pour la plus belle des journées !" },
+  accueil:{ f:'audio/lea/accueil.mp3', t:"Et ça y est, ça commence ! Les premiers invités arrivent, on s'embrasse, on complimente déjà la robe, et quelqu'un cherche toujours où il a rangé les confettis. Petit conseil de votre animatrice : profitez de l'accueil pour dire bonjour à tout le monde… parce que croyez-moi, cette journée, elle file à une vitesse grand V. Les mariés se préparent en coulisses, avec le fameux papillon dans le ventre. L'émotion monte doucement, et sur Radio Mon Mariage, on est déjà en fête !" },
+  brunch:{ f:'audio/lea/brunch.mp3', t:"Quel bonheur ce brunch en jardin ! Le café fume, les viennoiseries disparaissent plus vite que prévu, et les mariés découvrent enfin les petits mots laissés près des assiettes. C'est doux, c'est lumineux, ça sent l'été… Profitez de ces minutes volées, elles sont précieuses. Ici, Radio Mon Mariage, on ouvre l'antenne en douceur, comme un rayon de soleil sur la table du petit-déjeuner." },
+  ceremonie:{ f:'audio/lea/ceremonie.mp3', t:"Chut… silence dans la salle, ça va commencer. La cérémonie, c'est le moment où tout le monde sort les mouchoirs — oui, même les témoins qui font les costauds. On échange les vœux, on rit, on pleure un bon coup, et on signe pour la vie. Alors respirez bien, regardez-vous dans les yeux, et retenez tout, absolument tout : dans dix ans, ce sont ces secondes-là que vous rejouerez en boucle. Ici, Radio Mon Mariage est officiellement en train de fondre !" },
+  cocktail:{ f:'audio/lea/cocktail.mp3', t:"Place au cocktail ! Les bulles coulent, les rires montent, et tout le monde arbore ce petit sourire des grands jours. C'est aussi l'heure des photos : alors on fait semblant de discuter naturellement, main sur l'épaule, regard complice… et on évite de cligner des yeux, s'il vous plaît ! Petit rappel de votre animatrice : hydratez-vous entre deux coupes, la soirée est encore longue. Sur Radio Mon Mariage, l'apéro, c'est sacré… mais la piste de danse, elle, n'attendra pas !" },
+  photos:{ f:'audio/lea/photos.mp3', t:"Et voilà l'heure des photos ! Tout le monde se rassemble, on replace les boucles d'oreilles, on répare les cravates, et on sourit jusqu'aux oreilles. Le photographe est un artiste, mais il a besoin de vous : regardez l'objectif, pas vos pieds ! Et petit secret d'animatrice — les meilleures photos, c'est souvent celles qu'on ne prépare pas. Alors lâchez-vous, riez aux éclats, oubliez la caméra… Sur Radio Mon Mariage, on adore les sourires de travers !" },
+  diner:{ f:'audio/lea/diner.mp3', t:"À table, mesdames et messieurs ! Le dîner, c'est le moment où les estomacs et les cœurs se remplissent en même temps. Derrière les fourneaux, l'équipe donne tout : savourez chaque assiette, applaudissez chaque service, et gardez une petite place — je dis bien une petite place — pour le dessert. Les toasts vont fuser, les discours aussi : préparez vos applaudissements et un mouchoir de secours. Ici, sur Radio Mon Mariage, on dîne bien, on aime fort, et on trinque toujours avec ses voisins de table !" },
+  discours:{ f:'audio/lea/discours.mp3', t:"Micro, micro… on teste, un, deux ! Place aux discours ! Les témoins racontent forcément une histoire gênante — c'est la tradition —, papa sort le poème préparé en secret, et maman a déjà les larmes aux yeux avant même de commencer. Applaudissez fort, riez ensemble, et surtout : retenez bien les anecdotes, elles ressortiront au petit-déjeuner demain matin !" },
+  gateau:{ f:'audio/lea/gateau.mp3', t:"Attention, moment sucré ! La pièce montée fait son entrée, et c'est toujours un spectacle : les enfants se précipitent, les grands font semblant de ne pas être intéressés, et tout le monde compte discrètement les étages. Alors oui, on garde une petite place au dessert — je vous avais prévenus ! Et si les mariés s'envoient du gâteau en pleine figure, officiellement, c'est la faute du photographe !" },
+  bal:{ f:'audio/lea/bal.mp3', t:"Éteignez les lumières… allumez les étoiles : c'est l'ouverture de bal ! La première danse des mariés, c'est le genre de moment qui donne des frissons jusque dans les chaussons. Tout le monde se lève, les téléphones s'alignent, et pendant deux ou trois minutes, il n'y a plus qu'eux deux sur terre. Balancez-moi ces regards amoureux, cette valse un peu imparfaite mais tellement parfaite… Sur Radio Mon Mariage, on a les larmes faciles, et on l'assume totalement !" },
+  soiree:{ f:'audio/lea/soiree.mp3', t:"Et maintenant… libérez la piste ! La soirée bat son plein, le DJ chauffe la salle, et tatie a déjà repris le micro une fois — on l'aime pour ça. On danse, on transpire, on retire les talons trop hauts sans aucun remords. Petit rappel de votre animatrice préférée : buvez de l'eau, faites des petites pauses, et surtout, réservez vos dernières forces pour le slow final. Ici, Radio Mon Mariage : la nuit est jeune, la playlist est chaude, et personne ne rentre à pied !" },
+  nuit:{ f:'audio/lea/nuit.mp3', t:"La nuit s'avance, mais on ne dit pas encore adieu… C'est l'heure des dernières émotions : le bouquet qui vole, les lumières qui dansent, les câlins interminables à la sortie. Aux mariés : regardez bien autour de vous, ces visages fatigués et heureux, c'est votre plus beau cadeau. Et aux invités : un dernier verre, une dernière photo, et surtout… raccompagnez ceux qui ont trop dansé ! Radio Mon Mariage ne s'endort jamais tout à fait — on se retrouve dans un instant !" },
+  transition1:{ f:'audio/lea/transition1.mp3', t:"Toujours sur Radio Mon Mariage… c'était pour vous, les tourtereaux ! On continue la fiesta, on garder le sourire — pardon : on garde le sourire, et on se retrouve dans un instant pour la suite du programme. Restez bien branchés !" },
+  transition2:{ f:'audio/lea/transition2.mp3', t:"Vous êtes toujours sur Radio Mon Mariage, la fréquence des cœurs qui battent fort ! On enchaîne tout de suite avec un peu de musique, et on se retrouve très vite pour la suite des festivités. Restez avec nous !" },
+  transition3:{ f:'audio/lea/transition3.mp3', t:"Radio Mon Mariage ne vous lâche pas ! Savourez ces notes, le programme continue juste après… et croyez-moi, le meilleur reste à venir !" },
+  dedicace:{ f:'audio/lea/dedicace.mp3', t:"Petite dédicace spéciale pour les tourtereaux : on vous souhaite une vie pleine de fous rires, de voyages ratés mais géniaux, de débats complètement ridicules et d'amours immenses. Et une règle d'or : ne jamais se coucher fâchés… surtout pas pendant un slow ! On vous aime très fort !" },
+  generique1:{ f:'audio/lea/generique1.mp3', t:"Un moment unique de plus dans cette journée de rêve ! C'est ça, un mariage : une succession d'instants qu'on n'avait pas prévus et dont on se souvient toute la vie. Alors ouvrez grand les yeux, serrez vos proches un peu plus fort, et dansez comme si demain n'existait pas. Radio Mon Mariage, elle, garde précieusement chaque seconde !" },
+  generique2:{ f:'audio/lea/generique2.mp3', t:"Quel beau moment, mesdames et messieurs ! Dans ces journées trop parfaites, il y a toujours un détail qui dérape — un voile qui s'envole, un enfant qui traverse la photo, un toast un peu trop arrosé — et c'est exactement ça qu'on adorera dans dix ans. Alors respirez, souriez, et laissez la magie opérer !" },
+  outro:{ f:'audio/lea/outro.mp3', t:"Et voilà… le rideau tombe sur cette journée de rêve. Merci à toutes et à tous d'avoir dansé, ri, chanté — parfois un peu faux, mais toujours avec le cœur. Aux mariés : mille bonheurs, une vie de rires, et plein de souvenirs comme celui-ci. Moi c'est Léa, votre animatrice, et Radio Mon Mariage va doucement s'endormir… jusqu'au prochain grand jour. Prenez soin de vous, rentrez bien, et… je vous embrasse très fort !" }
+};
+
+const norm = s => (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const LEA_KEYWORDS = [
+  ['ceremonie', ['ceremonie','mairie','civile','laique','religieuse','union','eglise','temple','consulat','voeux']],
+  ['cocktail',  ['cocktail','vin d','honneur','apero','aperitif','bulles','champagne']],
+  ['photos',    ['photo','shooting','album']],
+  ['discours',  ['discours','speech','toast','hommage','cafe','jeu','animation']],
+  ['gateau',    ['gateau','dessert','piece montee','montee','buche','crepes']],
+  ['diner',     ['diner','repas','service','table','menu','gala','banquet']],
+  ['bal',       ['ouverture','bal','premiere danse','valse','danse des']],
+  ['soiree',    ['soiree','dj','piste','dance','club','fete','festif','karaoke','boum']],
+  ['nuit',      ['nuit','feu','artifice','lanterne','lampion','bouquet','depart','envoi','fin de']],
+  ['brunch',    ['brunch','petit dej']],
+  ['accueil',   ['accueil','arrive','invite','jardin']]
+];
+function matchClip(title){
+  const n = norm(title);
+  for(const pair of LEA_KEYWORDS){
+    if(pair[1].some(k => n.includes(k))) return LEA_CLIPS[pair[0]] ? pair[0] : null;
+  }
+  return null;
+}
+function scriptFor(ev){
+  if(ev.dsScript && ev.dsScript.trim()) return { tts:true, text:ev.dsScript.trim() };
+  let id = matchClip(ev.title);
+  if(!id) id = LEA_CLIPS.generique1 ? 'generique1' : null;
+  if(id && LEA_CLIPS[id] && LEA_CLIPS[id].f) return { id };
+  return null;
+}
+
+/* ---------- Sous-titres ---------- */
+function estimateDur(text){ return Math.max(2200, Math.round(text.length / 14.5) * 1000); }
+function splitChunks(text){
+  const raw = (text||'').replace(/\s+/g,' ').trim();
+  const out = []; let buf = '';
+  for(const ch of raw){
+    buf += ch;
+    if(ch === '.' || ch === '!' || ch === '?' || ch === '…'){ out.push(buf.trim()); buf = ''; }
+  }
+  if(buf.trim()) out.push(buf.trim());
+  const merged = [];
+  out.forEach(s=>{
+    if(merged.length && (merged[merged.length-1] + ' ' + s).length < 95) merged[merged.length-1] += ' ' + s;
+    else merged.push(s);
+  });
+  return merged.length ? merged : [raw];
+}
+const Caption = {
+  bar:null, txt:null, chunks:[], i:0, t0:0, dur:0, visible:false, locked:false,
+  init(){
+    this.bar = document.getElementById('captionBar');
+    this.txt = document.getElementById('capText');
+  },
+  start(chunks, dur){
+    this.chunks = chunks.length ? chunks : [''];
+    this.i = 0; this.t0 = performance.now();
+    this.dur = dur || estimateDur(this.chunks.join(' '));
+    this.locked = false; this.visible = true;
+    this.bar.classList.add('show');
+    this.render();
+  },
+  setIndex(i){
+    if(!this.visible) return;
+    this.i = Math.max(0, Math.min(this.chunks.length-1, i));
+    this.render();
+  },
+  tick(){
+    if(!this.visible || this.locked || this.chunks.length < 2) return;
+    const per = Math.max(1400, this.dur / this.chunks.length);
+    const i = Math.min(this.chunks.length-1, Math.floor((performance.now()-this.t0)/per));
+    if(i !== this.i){ this.i = i; this.render(); }
+  },
+  render(){ if(this.txt) this.txt.textContent = this.chunks[this.i] || ''; },
+  current(){ return this.visible ? (this.chunks[this.i] || '') : ''; },
+  clear(){ this.visible = false; this.chunks = []; this.locked = false; if(this.bar) this.bar.classList.remove('show'); }
+};
+
+/* ---------- Léa : clips studio + TTS DeepSeek + synchro labiale ---------- */
+function pickFrenchVoice(){
+  if(!('speechSynthesis' in window)) return null;
+  const vs = speechSynthesis.getVoices().filter(v => /^fr/i.test(v.lang));
+  const prefs = ['amelie','audrey','aurelie','denise','eloise','charlotte','celine','marie','paulina','virginie','julie','google'];
+  for(const p of prefs){
+    const v = vs.find(v => v.name.toLowerCase().includes(p));
+    if(v) return v;
+  }
+  return vs[0] || null;
+}
+if('speechSynthesis' in window){
+  speechSynthesis.getVoices();
+  speechSynthesis.onvoiceschanged = ()=> speechSynthesis.getVoices();
+}
+
+const Lea = {
+  el:null, node:null, active:false, mode:null, curId:null,
+  chunks:[], estDur:0, lastOnEnd:null, ttsPulse:0, simT:0, mouth:0,
+  ensureEl(){
+    if(this.el) return;
+    this.el = new Audio();
+    this.el.preload = 'auto';
+    this.el.addEventListener('ended', ()=> this.finishClip());
+    this.el.addEventListener('error', ()=> this.finishClip());
+    this.el.addEventListener('loadedmetadata', ()=>{
+      if(Caption.visible && this.el.duration && isFinite(this.el.duration)) Caption.dur = this.el.duration * 1000;
+    });
+  },
+  connectEl(){
+    if(this.node || !Bus.ctx || !this.el) return;
+    try{
+      this.node = Bus.ctx.createMediaElementSource(this.el);
+      this.node.connect(Bus.speechGain);
+    }catch(e){ this.node = null; }
+  },
+  speak(clipId, onEnd){
+    const clip = LEA_CLIPS[clipId];
+    if(!clip || !clip.f){ if(onEnd) onEnd(); return; }
+    this.stop();
+    Bus.ensure();
+    if(Bus.ctx.state === 'suspended') Bus.ctx.resume();
+    this.ensureEl(); this.connectEl();
+    this.curId = clipId;
+    this.chunks = splitChunks(clip.t);
+    this.estDur = estimateDur(clip.t);
+    this.mode = 'clip'; this.active = true;
+    this.lastOnEnd = onEnd || null;
+    Caption.start(this.chunks, null);
+    this.el.src = clip.f;
+    const p = this.el.play();
+    if(p && p.catch) p.catch(()=>{
+      // lecture bloquée : dérouler les sous-titres en mode minuteur
+      setTimeout(()=>{ if(this.active && this.mode === 'clip' && this.curId === clipId) this.finishClip(); }, this.estDur + 700);
+    });
+  },
+  finishClip(){
+    if(!this.active || this.mode !== 'clip') return;
+    this.active = false; this.mode = null; this.curId = null;
+    Caption.clear();
+    const cb = this.lastOnEnd; this.lastOnEnd = null;
+    if(cb) cb();
+  },
+  speakTTS(text, onEnd){
+    this.stop();
+    if(!('speechSynthesis' in window) || !text){ if(onEnd) onEnd(); return; }
+    const u = new SpeechSynthesisUtterance(text);
+    const v = pickFrenchVoice(); if(v) u.voice = v;
+    u.lang = 'fr-FR'; u.rate = 1.03; u.pitch = 1.06;
+    this.chunks = splitChunks(text);
+    this.estDur = estimateDur(text);
+    this.mode = 'tts'; this.active = true;
+    this.lastOnEnd = onEnd || null;
+    Caption.start(this.chunks, this.estDur);
+    Caption.locked = true;
+    u.onboundary = e=>{
+      this.ttsPulse = 1;
+      if(e.charIndex != null){
+        let acc = 0, idx = 0;
+        for(let i=0;i<this.chunks.length;i++){ acc += this.chunks[i].length + 1; if(e.charIndex < acc){ idx = i; break; } idx = i; }
+        Caption.setIndex(idx);
+      }
+    };
+    u.onend = ()=> this.finishTTS();
+    u.onerror = ()=> this.finishTTS();
+    try{ speechSynthesis.cancel(); speechSynthesis.speak(u); }
+    catch(e){ this.finishTTS(); }
+  },
+  finishTTS(){
+    if(!this.active || this.mode !== 'tts') return;
+    this.active = false; this.mode = null;
+    Caption.clear();
+    const cb = this.lastOnEnd; this.lastOnEnd = null;
+    if(cb) cb();
+  },
+  stop(){
+    if(this.mode === 'tts' && 'speechSynthesis' in window){ try{ speechSynthesis.cancel(); }catch(e){} }
+    if(this.el){ try{ this.el.pause(); }catch(e){} }
+    this.active = false; this.mode = null; this.curId = null; this.lastOnEnd = null;
+    Caption.clear();
+  },
+  speechLevel(){
+    if(!Bus.ctx || !Bus.speechAnalyser) return 0;
+    Bus.speechAnalyser.getByteFrequencyData(Bus.speechData);
+    let s = 0; for(let i=2;i<42;i++) s += Bus.speechData[i];
+    return s / (40*255);
+  },
+  tick(dt){
+    let lvl = 0;
+    if(this.active){
+      const a = this.speechLevel();
+      if(this.mode === 'clip' && a > 0.006){
+        lvl = Math.min(1, a * 2.8);
+      } else {
+        // secours : bouche simulée (fichier non analysable par Web Audio)
+        this.simT += dt;
+        lvl = 0.30 + 0.30 * Math.sin(this.simT*11.7) * Math.sin(this.simT*4.3);
+        lvl = Math.max(0.05, lvl * (0.75 + 0.25*Math.sin(this.simT*1.9)));
+      }
+      if(this.mode === 'tts'){
+        this.ttsPulse = Math.max(0, this.ttsPulse - dt*3.4);
+        lvl = Math.max(lvl*0.45, this.ttsPulse*0.75 + 0.12);
+      }
+    }
+    this.mouth += (lvl - this.mouth) * Math.min(1, dt*14);
+    Caption.tick();
+  }
+};
+
+/* ---------- Playlist (fichiers locaux de l'utilisateur) ---------- */
+const Playlist = {
+  tracks:[], el:null, node:null, gain:null, idx:0, playing:false, enabled:true,
+  init(){
+    this.listEl = document.getElementById('plList');
+    this.el = new Audio();
+    this.el.preload = 'auto';
+    this.el.addEventListener('ended', ()=>{
+      if(this.tracks.length) this.play((this.idx+1) % this.tracks.length);
+    });
+    this.el.addEventListener('loadedmetadata', ()=>{
+      const tr = this.tracks[this.idx];
+      if(tr && this.el.duration && isFinite(this.el.duration)) tr.dur = this.el.duration;
+      renderPlaylistUI();
+    });
+  },
+  connect(){
+    if(this.node || !Bus.ctx) return;
+    try{
+      this.node = Bus.ctx.createMediaElementSource(this.el);
+      this.gain = Bus.ctx.createGain();
+      this.node.connect(this.gain); this.gain.connect(Bus.musicGain);
+    }catch(e){ this.node = null; this.gain = null; }
+  },
+  addFiles(files){
+    let added = 0;
+    Array.from(files).forEach(f=>{
+      if(!/^audio\//.test(f.type) && !/\.(mp3|m4a|aac|wav|ogg|oga|opus|flac|webm)$/i.test(f.name)) return;
+      this.tracks.push({ name:f.name.replace(/\.[^.]+$/,''), url:URL.createObjectURL(f), dur:null });
+      added++;
+    });
+    if(added){ renderPlaylistUI(); syncPlaylistUI(); }
+  },
+  play(i){
+    if(!this.tracks.length) return false;
+    Bus.ensure();
+    if(Bus.ctx.state === 'suspended') Bus.ctx.resume();
+    this.connect();
+    this.idx = (i != null) ? i : this.idx;
+    if(this.idx >= this.tracks.length) this.idx = 0;
+    if(this.gain) Bus.ramp(this.gain, 1, 0.15);
+    this.el.src = this.tracks[this.idx].url;
+    this.el.play().catch(()=>{});
+    this.playing = true;
+    renderPlaylistUI();
+    return true;
+  },
+  resume(){
+    if(!this.tracks.length) return;
+    if(this.gain) Bus.ramp(this.gain, 1, 0.3);
+    this.el.play().catch(()=>{});
+    this.playing = true; renderPlaylistUI();
+  },
+  pause(){
+    if(!this.el) return;
+    if(this.gain) Bus.ramp(this.gain, 0.0001, 0.25);
+    const el = this.el;
+    setTimeout(()=>{ el.pause(); if(this.gain) Bus.ramp(this.gain, 1, 0.05); }, 300);
+    this.playing = false; renderPlaylistUI();
+  },
+  removeAt(i){
+    const wasCurrent = this.playing && i === this.idx;
+    const tr = this.tracks[i];
+    if(tr){ try{ URL.revokeObjectURL(tr.url); }catch(e){} }
+    this.tracks.splice(i,1);
+    if(this.idx > i) this.idx--;
+    if(this.idx >= this.tracks.length) this.idx = Math.max(0, this.tracks.length-1);
+    if(wasCurrent){
+      if(this.tracks.length) this.play(this.idx);
+      else { this.playing = false; try{ this.el.pause(); }catch(e){} }
+    }
+    renderPlaylistUI(); syncPlaylistUI();
+  },
+  move(i,d){
+    const j = i + d;
+    if(j < 0 || j >= this.tracks.length) return;
+    const t = this.tracks[i]; this.tracks[i] = this.tracks[j]; this.tracks[j] = t;
+    if(this.idx === i) this.idx = j; else if(this.idx === j) this.idx = i;
+    renderPlaylistUI();
+  },
+  clear(){
+    this.tracks.forEach(t=>{ try{ URL.revokeObjectURL(t.url); }catch(e){} });
+    this.tracks = []; this.idx = 0; this.playing = false;
+    if(this.el){ try{ this.el.pause(); }catch(e){} }
+    renderPlaylistUI(); syncPlaylistUI();
+  },
+  fmtDur(s){
+    if(!s || !isFinite(s)) return '--:--';
+    const m = Math.floor(s/60), r = Math.floor(s%60);
+    return m + ':' + String(r).padStart(2,'0');
+  }
+};
+function renderPlaylistUI(){
+  const el = Playlist.listEl; if(!el) return;
+  el.innerHTML = '';
+  if(!Playlist.tracks.length){
+    el.innerHTML = '<div class="tl-note" style="margin:0 0 10px">Aucun titre pour l\'instant — la session synthé « Néo-Romantique » assure la musique.</div>';
+    return;
+  }
+  Playlist.tracks.forEach((tr,i)=>{
+    const row = document.createElement('div');
+    row.className = 'pl-row' + (Playlist.playing && i === Playlist.idx ? ' playing' : '');
+    const safe = tr.name.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+    row.innerHTML = `
+      <span class="pl-idx">${Playlist.playing && i === Playlist.idx ? '♪' : (i+1)}</span>
+      <span class="pl-name" title="${safe}">${safe}</span>
+      <span class="pl-dur">${Playlist.fmtDur(tr.dur)}</span>
+      <button data-act="up" data-i="${i}"${i===0?' disabled':''}>▲</button>
+      <button data-act="dn" data-i="${i}"${i===Playlist.tracks.length-1?' disabled':''}>▼</button>
+      <button data-act="rm" data-i="${i}">✕</button>`;
+    el.appendChild(row);
+  });
+}
+
+/* ---------- Source musicale : playlist utilisateur ou synthé intégré ---------- */
+const MusicSource = {
+  on:false,
+  play(){
+    Bus.ensure();
+    if(Bus.ctx.state === 'suspended') Bus.ctx.resume();
+    if(Playlist.tracks.length && Playlist.enabled){
+      if(!Playlist.playing) Playlist.play();
+      else Playlist.resume();
+    } else if(!Music.playing){
+      Music.toggle();
+    }
+    this.on = true; syncPlaylistUI();
+  },
+  pause(){
+    if(Music.playing) Music.toggle();
+    if(Playlist.playing) Playlist.pause();
+    this.on = false; syncPlaylistUI();
+  },
+  toggle(){ this.on ? this.pause() : this.play(); }
+};
+
+/* ---------- Le Direct : programme calé sur la Timeline du Jour J ---------- */
+const Broadcast = {
+  on:false, vNow:13*60, speed:48, phase:'idle', events:[], queue:[], nextIdx:0, altCount:0,
+  sorted(){ return [...timeline].sort((a,b)=> toMin(a.time) - toMin(b.time)); },
+  currentEvent(){
+    return timeline.find(e => this.vNow >= toMin(e.time) && this.vNow < toMin(e.time) + e.dur) || null;
+  },
+  begin(withIntro){
+    Bus.ensure();
+    if(Bus.ctx.state === 'suspended') Bus.ctx.resume();
+    this.events = this.sorted();
+    if(!this.events.length) return;
+    this.on = true; this.queue = []; this.altCount = 0;
+    this.vNow = toMin(this.events[0].time);
+    this.nextIdx = 0;
+    if(withIntro){
+      this.phase = 'jingle';
+      Lea.speak('intro', ()=>{ if(!this.on) return; this.phase = 'music'; MusicSource.play(); });
+    } else {
+      this.phase = 'music'; MusicSource.play();
+    }
+    syncBroadcastUI();
+  },
+  start(){ this.begin(true); },
+  stop(keepMusic){
+    this.on = false; this.phase = 'idle'; this.queue = [];
+    Lea.stop();
+    Bus.duck(false);
+    if(!keepMusic && MusicSource.on) MusicSource.pause();
+    syncBroadcastUI();
+  },
+  toggle(){ this.on ? this.stop() : this.start(); },
+  speakEvent(ev){
+    if(!this.on) return;
+    this.phase = 'speech';
+    Bus.duck(true);
+    const after = ()=>{
+      if(!this.on) return;
+      this.altCount++;
+      const tid = ['transition1','transition2','dedicace','transition3'][(this.altCount-1) % 4];
+      const useTrans = this.altCount % 2 === 0 && LEA_CLIPS[tid] && LEA_CLIPS[tid].f;
+      const resume = ()=>{ if(!this.on) return; Bus.duck(false); this.phase = 'music'; MusicSource.play(); };
+      if(useTrans) Lea.speak(tid, resume);
+      else resume();
+    };
+    const s = scriptFor(ev);
+    if(!s){ after(); return; }
+    if(s.tts) Lea.speakTTS(s.text, after);
+    else Lea.speak(s.id, after);
+  },
+  tick(dt){
+    if(!this.on) return;
+    const slow = this.phase === 'speech' ? 6 : 1;
+    this.vNow += dt * this.speed / 60 / slow;
+    while(this.nextIdx < this.events.length && this.vNow >= toMin(this.events[this.nextIdx].time)){
+      this.queue.push(this.events[this.nextIdx++]);
+    }
+    if(this.phase === 'music'){
+      if(this.queue.length){
+        this.speakEvent(this.queue.shift());
+      } else if(this.events.length){
+        const last = this.events[this.events.length-1];
+        if(this.vNow > toMin(last.time) + last.dur + 4 && !Lea.active){
+          this.phase = 'outro';
+          Lea.speak('outro', ()=> this.stop(true));
+        }
+      }
+    }
+  },
+  jumpTo(id){
+    this.events = this.sorted();
+    const i = this.events.findIndex(e => e.id === Number(id));
+    if(i < 0) return;
+    if(!this.on) this.begin(false);
+    Lea.stop(); this.queue.length = 0;
+    this.vNow = toMin(this.events[i].time);
+    this.nextIdx = i + 1;
+    this.speakEvent(this.events[i]);
+  },
+  resync(){
+    if(!this.on) return;
+    this.events = this.sorted();
+    this.queue.length = 0;
+    this.nextIdx = this.events.filter(e => toMin(e.time) <= this.vNow).length;
+  }
+};
+
+/* ---------- DeepSeek : scripts personnalisés ---------- */
+const DS = {
+  endpoint:'https://api.deepseek.com/chat/completions',
+  status(msg, err){
+    const el = document.getElementById('dsStatus');
+    if(el){ el.textContent = msg; el.classList.toggle('err', !!err); }
+  },
+  async generate(forIds){
+    const key = document.getElementById('dsKey').value.trim();
+    if(!key){ this.status('Ajoutez votre clé API DeepSeek (sk-…) pour commencer.', true); return; }
+    try{ localStorage.setItem('rp_ds_key', key); }catch(e){}
+    const names = document.getElementById('dsNames').value.trim();
+    const date  = document.getElementById('dsDate').value.trim();
+    const place = document.getElementById('dsPlace').value.trim();
+    const evs = Broadcast.sorted().filter(e => !forIds || forIds.includes(e.id));
+    if(!evs.length){ this.status('Ajoutez d\'abord des moments dans la Timeline.', true); return; }
+    this.status('✨ DeepSeek écrit les interventions de Léa…');
+    const sys = "Tu es Léa, animatrice de « Radio Mon Mariage », la radio d'un jour diffusée pendant un mariage. Style : chaleureux, pétillant, complice, un peu drôle, jamais solennel ni cliché. Tu t'adresses aux invités comme à une bande de copains, avec tendresse pour les mariés. Pour chaque moment du jour J fourni, écris ce que Léa dit à l'antenne : 2 à 4 phrases (55 à 90 mots), sans heure précise, sans introduction du type « Voici », en entrant directement dans le propos, avec une touche d'humour et d'émotion. Réponds UNIQUEMENT par un JSON valide : {\"scripts\":[{\"id\": <id du moment>, \"text\": \"…\"}]}";
+    const usr = "Infos mariage — Marié·e·s : " + (names || 'non précisés') + " ; Date : " + (date || 'non précisée') + " ; Lieu : " + (place || 'non précisé') +
+      ".\nMoments du jour J : " + JSON.stringify(evs.map(e=>({ id:e.id, moment:e.title, duree_minutes:e.dur })));
+    try{
+      const r = await fetch(this.endpoint, {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + key },
+        body: JSON.stringify({
+          model:'deepseek-chat',
+          messages:[ { role:'system', content:sys }, { role:'user', content:usr } ],
+          response_format:{ type:'json_object' },
+          temperature:1.4,
+          max_tokens:2500
+        })
+      });
+      if(!r.ok){
+        const txt = await r.text().catch(()=> '');
+        this.status('Erreur DeepSeek (' + r.status + ') — clé valide, du crédit sur le compte ? ' + String(txt).slice(0,140), true);
+        return;
+      }
+      const j = await r.json();
+      let content = (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content) || '';
+      content = content.replace(/```(?:json)?/g, '').trim();
+      const parsed = JSON.parse(content);
+      const scripts = parsed.scripts || [];
+      let n = 0;
+      scripts.forEach(s=>{
+        const ev = timeline.find(e => e.id === Number(s.id));
+        if(ev && s.text && String(s.text).trim()){ ev.dsScript = String(s.text).trim(); n++; }
+      });
+      renderTimelineUI();
+      this.status('✨ ' + n + ' script' + (n>1?'s':'') + ' généré' + (n>1?'s':'') + ' ! Léa les lira à l\'antenne (voix du navigateur).');
+    }catch(err){
+      this.status('Échec de l\'appel : ' + err.message + ' — vérifiez la connexion, la clé, ou un blocage CORS du navigateur.', true);
+    }
+  }
+};
+
 
 /* ============================================================
    RADIO BUILDER
@@ -1245,10 +1931,15 @@ function drawScreen(R, t){
   ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
 
   // ---------- HEADER ----------
-  const now = new Date();
-  const clock = String(now.getHours()).padStart(2,'0') + ':' +
-                String(now.getMinutes()).padStart(2,'0') + ':' +
-                String(now.getSeconds()).padStart(2,'0');
+  let clock;
+  if(Broadcast.on){
+    clock = fmtMin(Math.floor(Broadcast.vNow));
+  } else {
+    const now = new Date();
+    clock = String(now.getHours()).padStart(2,'0') + ':' +
+            String(now.getMinutes()).padStart(2,'0') + ':' +
+            String(now.getSeconds()).padStart(2,'0');
+  }
   ctx.textBaseline = 'alphabetic';
   ctx.font = `800 ${22*S}px "Helvetica Neue", Arial, sans-serif`;
   ctx.fillStyle = acc + 'cc';
@@ -1279,6 +1970,7 @@ function drawScreen(R, t){
 
   const cx = px + pw/2, cy = py + 108*S;
   const level = R.spec.reduce((a,b)=>a+b,0) / R.spec.length;
+  const talk = Lea.active ? Lea.mouth : level*0.5;
   const bob = Math.sin(t*1.4)*3*S;
 
   // head glow
@@ -1318,8 +2010,8 @@ function drawScreen(R, t){
     ctx.fillStyle = '#241b21'; ctx.fill();
   });
   // mouth (animée avec la musique)
-  const mw = 20*S + level*36*S;
-  const mh = 7*S + level*20*S;
+  const mw = 20*S + talk*38*S;
+  const mh = 7*S + talk*22*S;
   ctx.beginPath();
   ctx.ellipse(cx, cy + 38*S + bob, mw, mh, 0, 0, Math.PI*2);
   ctx.fillStyle = '#c2446c'; ctx.fill();
@@ -1385,11 +2077,22 @@ function drawScreen(R, t){
           ctx.fillStyle = 'rgba(12,10,14,0.92)';
           ctx.fillText(ev.title.slice(0,16), x0 + 8*S, y0 + h0 - 9*S);
         }
+        const isCur = Broadcast.on && Broadcast.currentEvent() === ev;
+        if(isCur){
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 2*S;
+          ctx.shadowColor = '#ffffff'; ctx.shadowBlur = 10*S;
+          roundRect(ctx, x0, y0, w0, h0, 8*S); ctx.stroke();
+          ctx.shadowBlur = 0;
+        }
       });
 
-      // moving cursor
-      const cyc = ((t*0.055) % 1);
-      const cxx = ox + cyc*(ow - 6*S) + 3*S;
+      // cursor (position réelle de la journée pendant le direct)
+      let frac = (t*0.055) % 1;
+      if(Broadcast.on){
+        frac = Math.min(1, Math.max(0, (Broadcast.vNow - min)/span));
+      }
+      const cxx = ox + frac*(ow - 6*S) + 3*S;
       ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2*S;
       ctx.shadowColor = acc; ctx.shadowBlur = 14*S;
       ctx.beginPath(); ctx.moveTo(cxx, ty + 4*S); ctx.lineTo(cxx, ty + th - 4*S); ctx.stroke();
@@ -1398,7 +2101,12 @@ function drawScreen(R, t){
     // legend row
     ctx.font = `700 ${17*S}px "Helvetica Neue", Arial, sans-serif`;
     ctx.fillStyle = 'rgba(255,190,220,0.55)';
-    tracked(ctx, `${timeline.length} MOMENTS · CONFIGURABLE`, ox, ty + th + 28*S, 2.2*S);
+    if(Broadcast.on){
+      const cur = Broadcast.currentEvent();
+      tracked(ctx, ('EN DIRECT · ' + fmtMin(Math.floor(Broadcast.vNow)) + (cur ? ' · ' + cur.title : '')).slice(0,44), ox, ty + th + 28*S, 2.2*S);
+    } else {
+      tracked(ctx, `${timeline.length} MOMENTS · CONFIGURABLE`, ox, ty + th + 28*S, 2.2*S);
+    }
   }else{
     // ---- generic info rows
     const rows = [
@@ -1439,10 +2147,14 @@ function drawScreen(R, t){
   ctx.fillStyle = acc + '33';
   ctx.fillRect(40*S, sy + sh + 6*S, W - 80*S, 1.4*S);
 
-  // station marquee
-  const msg = '   ★   MON MARIAGE · RADIO   ★   104.2 FM   ★   DJ LÉA EN DIRECT   ★   LE GRAND JOUR APPROCHE   ★   ';
-  const scroll = -((t*66) % (ctx.measureText(msg).width + 200));
+  // station marquee (sous-titres de Léa quand elle parle)
   ctx.font = `700 ${17*S}px "Helvetica Neue", Arial, sans-serif`;
+  let msg = '   ★   MON MARIAGE · RADIO   ★   104.2 FM   ★   LÉA À L\'ANTENNE   ★   LE GRAND JOUR APPROCHE   ★   ';
+  if(Lea.active){
+    const cap = (Caption.current() || '').toUpperCase();
+    msg = '   ●   LÉA :  ' + (cap ? cap + '   ' : '');
+  }
+  const scroll = -((t*66) % (ctx.measureText(msg).width + 200));
   ctx.fillStyle = 'rgba(255,190,220,0.42)';
   ctx.fillText(msg + msg, 40*S + scroll, H - 12*S);
 
@@ -1542,9 +2254,7 @@ function endPointer(e){
           else hero.playGroup.position.z = baseZ;
         };
         anim();
-        const playing = Music.toggle();
-        hero.state.playing = playing;
-        syncMusicUI();
+        Broadcast.toggle();
       }
     }
   }
@@ -1557,7 +2267,9 @@ renderer.domElement.addEventListener('pointerleave', ()=>{
 
 /* ---------- UI ---------- */
 const btnRotate = document.getElementById('btnRotate');
-const btnMusic = document.getElementById('btnMusic');
+const btnDirect = document.getElementById('btnDirect');
+const btnPlaylist = document.getElementById('btnPlaylist');
+const btnDeepseek = document.getElementById('btnDeepseek');
 const btnTimeline = document.getElementById('btnTimeline');
 const btnMix = document.getElementById('btnMix');
 const btnLight = document.getElementById('btnLight');
@@ -1568,21 +2280,89 @@ btnRotate.addEventListener('click', ()=>{
   btnRotate.classList.toggle('active', controls.autoRotate);
 });
 
-function syncMusicUI(){
-  btnMusic.textContent = Music.playing ? '❚❚ Musique · ON' : '▶ Musique';
-  btnMusic.classList.toggle('active', Music.playing);
+function syncBroadcastUI(){
+  btnDirect.classList.toggle('active', Broadcast.on);
 }
-btnMusic.addEventListener('click', ()=>{
-  Music.toggle();
-  hero.state.playing = Music.playing;
-  syncMusicUI();
+function syncPlaylistUI(){
+  const n = Playlist.tracks.length;
+  btnPlaylist.textContent = n ? ('♫ Playlist · ' + n) : '♫ Playlist';
+  const src = document.getElementById('plSource');
+  if(src) src.textContent = Playlist.enabled ? 'Source : Playlist' : 'Source : Synthé';
+  const pp = document.getElementById('plPlay');
+  if(pp) pp.textContent = MusicSource.on ? '❚❚ Stop musique' : '▶ Musique seule';
+}
+btnDirect.addEventListener('click', ()=> Broadcast.toggle());
+btnPlaylist.addEventListener('click', ()=> openPanel('playlistPanel'));
+btnDeepseek.addEventListener('click', ()=> openPanel('dsPanel'));
+
+function openPanel(id){
+  ['timelinePanel','playlistPanel','dsPanel'].forEach(pid=>{
+    const p = document.getElementById(pid);
+    if(!p) return;
+    const isTarget = pid === id;
+    p.classList.toggle('open', isTarget);
+    if(pid === 'timelinePanel') btnTimeline.classList.toggle('active', isTarget);
+  });
+}
+document.querySelectorAll('.tl-close[data-close]').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    const p = document.getElementById(b.dataset.close);
+    if(p) p.classList.remove('open');
+  });
 });
 
 btnTimeline.addEventListener('click', ()=>{
-  const panel = document.getElementById('timelinePanel');
-  const open = panel.classList.toggle('open');
-  btnTimeline.classList.toggle('active', open);
+  const p = document.getElementById('timelinePanel');
+  openPanel(p.classList.contains('open') ? null : 'timelinePanel');
 });
+
+/* ---------- Playlist panel wiring ---------- */
+document.getElementById('plAdd').addEventListener('click', ()=> document.getElementById('plFiles').click());
+document.getElementById('plFiles').addEventListener('change', e=>{
+  Playlist.addFiles(e.target.files);
+  e.target.value = '';
+});
+const plDrop = document.getElementById('plDrop');
+plDrop.addEventListener('dragover', e=>{ e.preventDefault(); plDrop.classList.add('over'); });
+plDrop.addEventListener('dragleave', ()=> plDrop.classList.remove('over'));
+plDrop.addEventListener('drop', e=>{
+  e.preventDefault(); plDrop.classList.remove('over');
+  if(e.dataTransfer && e.dataTransfer.files) Playlist.addFiles(e.dataTransfer.files);
+});
+document.getElementById('plPlay').addEventListener('click', ()=> MusicSource.toggle());
+document.getElementById('plSource').addEventListener('click', ()=>{
+  Playlist.enabled = !Playlist.enabled;
+  if(MusicSource.on){ MusicSource.pause(); MusicSource.play(); }
+  syncPlaylistUI();
+});
+document.getElementById('plClear').addEventListener('click', ()=> Playlist.clear());
+Playlist.listEl.addEventListener('click', e=>{
+  const b = e.target.closest('button');
+  if(!b) return;
+  const i = Number(b.dataset.i), act = b.dataset.act;
+  if(act === 'rm') Playlist.removeAt(i);
+  else if(act === 'up') Playlist.move(i, -1);
+  else if(act === 'dn') Playlist.move(i, 1);
+});
+
+/* ---------- DeepSeek panel wiring ---------- */
+document.getElementById('dsGen').addEventListener('click', ()=> DS.generate(null));
+try{
+  const savedKey = localStorage.getItem('rp_ds_key');
+  if(savedKey) document.getElementById('dsKey').value = savedKey;
+}catch(e){}
+
+/* ---------- Vitesse du direct ---------- */
+document.getElementById('tlSpeed').addEventListener('change', e=>{
+  Broadcast.speed = Number(e.target.value) || 48;
+});
+
+/* ---------- Init modules ---------- */
+Caption.init();
+Playlist.init();
+renderPlaylistUI();
+syncPlaylistUI();
+syncBroadcastUI();
 
 let mixIndex = 0, mixTween = null;
 btnMix.addEventListener('click', ()=>{
@@ -1633,12 +2413,17 @@ btnReset.addEventListener('click', ()=>{
 });
 
 window.addEventListener('keydown', e=>{
+  const tag = (e.target && e.target.tagName) || '';
+  if(tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
   if(e.code === 'Space'){
     e.preventDefault();
-    Music.toggle(); hero.state.playing = Music.playing; syncMusicUI();
+    Broadcast.toggle();
   }
-  if(e.key.toLowerCase() === 'm'){ Music.toggle(); hero.state.playing = Music.playing; syncMusicUI(); }
-  if(e.key.toLowerCase() === 't'){ btnTimeline.click(); }
+  const k = e.key.toLowerCase();
+  if(k === 'm'){ MusicSource.toggle(); }
+  if(k === 't'){ openPanel('timelinePanel'); }
+  if(k === 'p'){ openPanel('playlistPanel'); }
+  if(k === 'd'){ openPanel('dsPanel'); }
 });
 
 /* ============================================================
@@ -1654,11 +2439,36 @@ window.addEventListener('resize', ()=>{
 const clock = new THREE.Clock();
 const specBuf = new Array(48).fill(0);
 let heroScreenAcc = 0, sideScreenAcc = 0;
+let armTalk = 0;
+let lastLiveTxt = '';
+
+function updateTlLive(){
+  const el = document.getElementById('tlLiveTxt');
+  const bar = document.getElementById('tlLive');
+  if(!el || !bar) return;
+  let txt;
+  if(Broadcast.on){
+    const cur = Broadcast.currentEvent();
+    txt = 'En direct — ' + fmtMin(Math.floor(Broadcast.vNow)) + (cur ? ' · ' + cur.title : '');
+  } else {
+    txt = 'Direct arrêté — appuyez sur ● En Direct';
+  }
+  if(txt !== lastLiveTxt){
+    lastLiveTxt = txt;
+    el.textContent = txt;
+  }
+  bar.classList.toggle('live', Broadcast.on);
+}
 
 function animate(){
   requestAnimationFrame(animate);
   const dt = Math.min(0.05, clock.getDelta());
   const t = clock.elapsedTime;
+
+  // ---- direct : horloge virtuelle + bouche de Léa
+  Broadcast.tick(dt);
+  Lea.tick(dt);
+  updateTlLive();
 
   // ---- spectrum
   const filled = Music.spectrum(specBuf);
@@ -1710,8 +2520,11 @@ function animate(){
   // ---- animatrice animation
   const A = animatrice.userData;
   const level = specBuf.reduce((a,b)=>a+b,0)/specBuf.length;
-  A.head.rotation.y = Math.sin(t*0.55)*0.26 + 0.05;
-  A.head.rotation.x = Math.sin(t*0.82)*0.055;
+  const talk = Lea.mouth;
+  armTalk += ((Lea.active ? 1 : 0) - armTalk) * Math.min(1, dt*5);
+  const k = armTalk;
+  A.head.rotation.y = Math.sin(t*0.55)*0.26 + 0.05 - k*0.10;
+  A.head.rotation.x = Math.sin(t*0.82)*0.055 + k*Math.sin(t*2.3)*0.035;
   A.head.rotation.z = Math.sin(t*0.44)*0.05;
   A.torso.scale.y = 1 + Math.sin(t*1.55)*0.014;
   A.torso.scale.x = 1 + Math.sin(t*1.55+1.2)*0.008;
@@ -1720,11 +2533,11 @@ function animate(){
   A.armL.rotation.x = Math.sin(t*0.86)*0.24 - 0.12;
   A.armL.userData.elbow.rotation.x = -0.62 + Math.sin(t*1.35)*0.30;
   A.armL.userData.elbow.rotation.z = 0.22 + Math.sin(t*0.9)*0.12;
-  A.armR.rotation.z = 0.30 + Math.sin(t*0.75)*0.06;
-  A.armR.rotation.x = -0.34 + Math.sin(t*1.18)*0.08;
-  A.armR.userData.elbow.rotation.x = -1.42 + Math.sin(t*1.3)*0.10;
-  A.mouth.scale.set(1 + level*0.9, 1 + level*1.9, 1);
-  A.lips.scale.set(1, 0.42 + level*0.30, 0.5);
+  A.armR.rotation.z = (0.30 + Math.sin(t*0.75)*0.06)*(1-k) + 0.14*k;
+  A.armR.rotation.x = (-0.34 + Math.sin(t*1.18)*0.08)*(1-k) + (-0.70 - talk*0.06)*k;
+  A.armR.userData.elbow.rotation.x = (-1.42 + Math.sin(t*1.3)*0.10)*(1-k) + (-1.86 + Math.sin(t*9.5)*0.06*talk)*k;
+  A.mouth.scale.set(1 + talk*0.9, 1 + talk*1.9, 1);
+  A.lips.scale.set(1, 0.42 + talk*0.30, 0.5);
   animatrice.position.y = -1.115 + Math.sin(t*1.55)*0.012;
 
   // ---- particles drift
@@ -1740,10 +2553,14 @@ function animate(){
   }
   pGeo.attributes.position.needsUpdate = true;
 
-  // ---- timeline cursor in HTML strip
-  const span = Number(tlStrip.dataset.span || 1);
-  const cyc = ((t*0.055) % 1);
-  tlCursor.style.left = (cyc*100) + '%';
+  // ---- timeline cursor in HTML strip (position réelle pendant le direct)
+  {
+    let frac = (t*0.055) % 1;
+    const mn = Number(tlStrip.dataset.min);
+    const span = Number(tlStrip.dataset.span || 1);
+    if(Broadcast.on && !isNaN(mn)) frac = Math.min(1, Math.max(0, (Broadcast.vNow - mn)/span));
+    tlCursor.style.left = (frac*100) + '%';
+  }
 
   controls.update();
   renderer.render(scene, camera);
