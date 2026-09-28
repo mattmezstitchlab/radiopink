@@ -367,14 +367,14 @@ scene.fog = new THREE.Fog(0x0b0c0e, 20, 62);
 })();
 
 const camera = new THREE.PerspectiveCamera(34, window.innerWidth/window.innerHeight, 0.1, 160);
-camera.position.set(5.0, 3.05, 7.2);
+camera.position.set(3.8, 2.0, 5.6);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.055;
-controls.target.set(0, 0.05, -0.2);
-controls.minDistance = 5.0;
-controls.maxDistance = 22;
+controls.target.set(0, 0, 0);
+controls.minDistance = 3.5;
+controls.maxDistance = 16;
 controls.minPolarAngle = 0.30;
 controls.maxPolarAngle = Math.PI * 0.535;
 controls.autoRotate = true;
@@ -1663,158 +1663,9 @@ const hero = buildRadio({
   accent:0xff4f9a, accentEmissive:0xff2f80, accentCss:'#ff6ba8',
   freq:104.2, mode:0
 });
-hero.group.position.set(0, 0, 0.85);
+hero.group.position.set(0, 0, 0);
 scene.add(hero.group);
 radios.push(hero);
-
-const left = buildRadio({
-  hero:false, body:0x2c2e34, dark:0x1a1b20,
-  accent:0x49e0ff, accentEmissive:0x1fb6ff, accentCss:'#6fe4ff',
-  freq:98.6, mode:3
-});
-left.group.position.set(-5.85, -0.12, -1.55);
-left.group.rotation.y = 0.46;
-left.group.scale.setScalar(0.88);
-scene.add(left.group);
-radios.push(left);
-
-const right = buildRadio({
-  hero:false, body:0xf1c8d5, dark:0xc796a7,
-  accent:0xff2f7e, accentEmissive:0xff1563, accentCss:'#ff5f9c',
-  freq:106.8, mode:5
-});
-right.group.position.set(5.85, -0.12, -1.55);
-right.group.rotation.y = -0.46;
-right.group.scale.setScalar(0.88);
-scene.add(right.group);
-radios.push(right);
-
-/* ============================================================
-   ANIMATRICE (présentatrice 3D)
-============================================================ */
-function buildAnimatrice(){
-  const g = new THREE.Group();
-  const skin = new THREE.MeshPhysicalMaterial({
-    color:0xe9c3a4, roughness:0.58, metalness:0.0,
-    clearcoat:0.32, clearcoatRoughness:0.55, sheen:0.55, sheenColor:new THREE.Color(0xffd2e2)
-  });
-  const dress = new THREE.MeshPhysicalMaterial({
-    color:0xcf3c7c, roughness:0.42, metalness:0.16,
-    clearcoat:0.7, clearcoatRoughness:0.3, sheen:1, sheenColor:new THREE.Color(0xff9ecb)
-  });
-  const hair = new THREE.MeshStandardMaterial({ color:0x2b1a20, roughness:0.46, metalness:0.32 });
-  const dark = new THREE.MeshStandardMaterial({ color:0x1a1b20, metalness:0.72, roughness:0.34 });
-  const glow = new THREE.MeshStandardMaterial({ color:0xff4f9a, emissive:0xff2f80, emissiveIntensity:1.6, roughness:0.3 });
-
-  // legs
-  const legGeo = new THREE.CapsuleGeometry(0.115,0.62,8,18);
-  [-0.185,0.185].forEach(x=>{
-    const l = new THREE.Mesh(legGeo, dark);
-    l.position.set(x,0.44,0); l.castShadow = true; g.add(l);
-    const shoe = new THREE.Mesh(new THREE.BoxGeometry(0.2,0.1,0.34), dark);
-    shoe.position.set(x,0.06,0.07); shoe.castShadow = true; g.add(shoe);
-  });
-
-  // skirt + torso
-  const skirt = new THREE.Mesh(new THREE.CylinderGeometry(0.30,0.52,0.9,28,1,false), dress);
-  skirt.position.y = 1.10; skirt.castShadow = true; g.add(skirt);
-
-  const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.255,0.34,10,22), dress);
-  torso.position.y = 1.70; torso.castShadow = true; g.add(torso);
-
-  // collar
-  const collar = new THREE.Mesh(new THREE.TorusGeometry(0.155,0.036,10,26), glow);
-  collar.rotation.x = Math.PI/2; collar.position.y = 1.985; g.add(collar);
-
-  // neck + head
-  const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.098,0.112,0.18,18), skin);
-  neck.position.y = 2.03; g.add(neck);
-
-  const head = new THREE.Group(); head.position.y = 2.30; g.add(head);
-  const skull = new THREE.Mesh(new THREE.SphereGeometry(0.30,32,26), skin);
-  skull.scale.set(1,1.12,0.96); skull.castShadow = true; head.add(skull);
-
-  // hair
-  const hairCap = new THREE.Mesh(new THREE.SphereGeometry(0.325,30,24), hair);
-  hairCap.scale.set(1,1.06,1); hairCap.position.set(0,0.028,-0.03); hairCap.castShadow = true; head.add(hairCap);
-  [-1,1].forEach(s=>{
-    const side = new THREE.Mesh(new THREE.SphereGeometry(0.155,18,16), hair);
-    side.position.set(0.255*s,-0.06,-0.03); side.scale.set(0.9,1.25,1); head.add(side);
-  });
-  const pony = new THREE.Mesh(new THREE.CapsuleGeometry(0.115,0.42,8,16), hair);
-  pony.position.set(0,-0.12,-0.34); pony.rotation.x = -0.32; pony.castShadow = true; head.add(pony);
-
-  // face
-  const eyeGeo = new THREE.SphereGeometry(0.045,16,12);
-  [-1,1].forEach(s=>{
-    const e = new THREE.Mesh(eyeGeo, dark);
-    e.position.set(0.108*s,0.032,0.262); e.scale.set(1,1.15,0.7); head.add(e);
-    const brow = new THREE.Mesh(new THREE.BoxGeometry(0.105,0.018,0.02), hair);
-    brow.position.set(0.108*s,0.108,0.272); brow.rotation.z = -0.14*s; head.add(brow);
-  });
-  const nose = new THREE.Mesh(new THREE.SphereGeometry(0.042,12,10), skin);
-  nose.position.set(0,-0.035,0.292); nose.scale.set(0.85,1.1,0.9); head.add(nose);
-  const mouth = new THREE.Mesh(new THREE.TorusGeometry(0.062,0.019,8,20,Math.PI), dark);
-  mouth.position.set(0,-0.128,0.276); mouth.rotation.x = 0.12; head.add(mouth);
-  const lips = new THREE.Mesh(new THREE.SphereGeometry(0.075,16,12), new THREE.MeshStandardMaterial({color:0xd6416f, roughness:0.42}));
-  lips.position.set(0,-0.135,0.262); lips.scale.set(1,0.42,0.5); head.add(lips);
-
-  // headphones
-  const band = new THREE.Mesh(new THREE.TorusGeometry(0.335,0.030,10,32,Math.PI), dark);
-  band.position.y = 0.02; head.add(band);
-  [-1,1].forEach(s=>{
-    const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.132,0.132,0.075,22), dark);
-    cup.rotation.z = Math.PI/2; cup.position.set(0.322*s,-0.055,0.01); head.add(cup);
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.128,0.014,8,26), glow);
-    ring.rotation.y = Math.PI/2; ring.position.set(0.362*s,-0.055,0.01); head.add(ring);
-    const light = new THREE.PointLight(0xff4f9a, 0.35, 1.1, 2);
-    light.position.set(0.42*s,-0.055,0.02); head.add(light);
-  });
-  const boom = new THREE.Mesh(new THREE.CylinderGeometry(0.016,0.016,0.32,10), dark);
-  boom.position.set(-0.215,-0.155,0.185); boom.rotation.set(0.55,0,0.62); head.add(boom);
-  const boomTip = new THREE.Mesh(new THREE.SphereGeometry(0.042,14,12), glow);
-  boomTip.position.set(-0.135,-0.245,0.275); head.add(boomTip);
-
-  // arms
-  function makeArm(side){
-    const pivot = new THREE.Group();
-    pivot.position.set(0.355*side, 1.885, 0.015);
-    const upper = new THREE.Mesh(new THREE.CapsuleGeometry(0.088,0.32,8,16), skin);
-    upper.position.set(0.035*side,-0.225,0); upper.rotation.z = -0.10*side; upper.castShadow = true;
-    pivot.add(upper);
-    const sleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.128,0.108,0.24,18), dress);
-    sleeve.position.set(0.028*side,-0.115,0); sleeve.rotation.z = -0.10*side; pivot.add(sleeve);
-    const elbow = new THREE.Group(); elbow.position.set(0.062*side,-0.475,0); pivot.add(elbow);
-    const fore = new THREE.Mesh(new THREE.CapsuleGeometry(0.078,0.30,8,16), skin);
-    fore.position.set(0,-0.205,0); fore.castShadow = true; elbow.add(fore);
-    const hand = new THREE.Mesh(new THREE.SphereGeometry(0.095,16,12), skin);
-    hand.position.set(0,-0.415,0); elbow.add(hand);
-    pivot.userData.elbow = elbow; pivot.userData.hand = hand;
-    return pivot;
-  }
-  const armL = makeArm(-1), armR = makeArm(1);
-  g.add(armL, armR);
-
-  // microphone in right hand
-  const mic = new THREE.Group();
-  const micBody = new THREE.Mesh(new THREE.CylinderGeometry(0.052,0.058,0.28,18), dark);
-  micBody.castShadow = true; mic.add(micBody);
-  const micHead = new THREE.Mesh(new THREE.SphereGeometry(0.082,18,14), glow);
-  micHead.position.y = 0.185; mic.add(micHead);
-  const micRing = new THREE.Mesh(new THREE.TorusGeometry(0.058,0.011,8,22), glow);
-  micRing.rotation.x = Math.PI/2; micRing.position.y = 0.115; mic.add(micRing);
-  mic.position.set(0.02,-0.52,0.12);
-  mic.rotation.set(-0.85,0,0.28);
-  armR.userData.elbow.add(mic);
-
-  g.userData = { head, torso, armL, armR, mouth, lips, skirt, glow };
-  return g;
-}
-
-const animatrice = buildAnimatrice();
-animatrice.position.set(2.05, -1.115, -1.35);
-animatrice.rotation.y = -0.30;
-scene.add(animatrice);
 
 /* ============================================================
    GROUND / CONTACT SHADOW / PARTICLES
@@ -1839,10 +1690,7 @@ const contactCanvas = makeCanvas(256,256);
 })();
 const contactTex = tex(contactCanvas,false);
 [
-  [0,0.85,8.0,4.0],
-  [-5.85,-1.55,7.2,3.6],
-  [5.85,-1.55,7.2,3.6],
-  [2.05,-1.35,3.0,2.4]
+  [0,0,6.4,3.2]
 ].forEach(([x,z,w,h])=>{
   const c = new THREE.Mesh(new THREE.PlaneGeometry(w,h),
     new THREE.MeshBasicMaterial({ map:contactTex, transparent:true, depthWrite:false, opacity:0.95 }));
@@ -1885,12 +1733,12 @@ const hemi = new THREE.HemisphereLight(0xdfe6f2, 0x12131a, 0.55);
 scene.add(hemi);
 
 const key = new THREE.DirectionalLight(0xfff4e6, 2.35);
-key.position.set(6.4, 8.2, 7.4);
+key.position.set(5.2, 7.5, 6.4);
 key.castShadow = true;
 key.shadow.mapSize.set(2048,2048);
-key.shadow.camera.near = 1; key.shadow.camera.far = 34;
-key.shadow.camera.left = -12; key.shadow.camera.right = 12;
-key.shadow.camera.top = 12; key.shadow.camera.bottom = -12;
+key.shadow.camera.near = 1; key.shadow.camera.far = 30;
+key.shadow.camera.left = -6; key.shadow.camera.right = 6;
+key.shadow.camera.top = 6; key.shadow.camera.bottom = -6;
 key.shadow.bias = -0.0006; key.shadow.normalBias = 0.012;
 scene.add(key);
 
@@ -2402,13 +2250,13 @@ btnLight.addEventListener('click', ()=>{
 
 btnReset.addEventListener('click', ()=>{
   const from = camera.position.clone();
-  const to = new THREE.Vector3(5.0, 3.05, 7.2);
+  const to = new THREE.Vector3(3.8, 2.0, 5.6);
   const t0 = performance.now();
   const step = ()=>{
     const t = Math.min(1,(performance.now()-t0)/800);
     const e = 1 - Math.pow(1-t,3);
     camera.position.lerpVectors(from,to,e);
-    controls.target.lerp(new THREE.Vector3(0,0.05,-0.2), e*0.25);
+    controls.target.lerp(new THREE.Vector3(0,0,0), e*0.25);
     if(t < 1) requestAnimationFrame(step);
   };
   step();
@@ -2440,8 +2288,7 @@ window.addEventListener('resize', ()=>{
 
 const clock = new THREE.Clock();
 const specBuf = new Array(48).fill(0);
-let heroScreenAcc = 0, sideScreenAcc = 0;
-let armTalk = 0;
+let heroScreenAcc = 0;
 let lastLiveTxt = '';
 
 function updateTlLive(){
@@ -2481,31 +2328,21 @@ function animate(){
       specBuf[i] = Math.pow(base*0.62 + hi*0.38, 1.7) * (0.30 + 0.28*Math.sin(t*0.6 + i*0.12) + 0.30);
     }
   }
-  // smooth into each radio
-  radios.forEach((R,i)=>{
-    for(let b=0;b<R.spec.length;b++){
-      const target = specBuf[Math.floor(b*specBuf.length/R.spec.length)] * (i===0 ? 1 : 0.85);
-      R.spec[b] += (target - R.spec[b]) * 0.22;
-    }
-  });
-
-  // ---- screens (throttled)
-  heroScreenAcc += dt;
-  sideScreenAcc += dt;
-  if(heroScreenAcc > 1/30){ heroScreenAcc = 0; drawScreen(hero, t); }
-  if(sideScreenAcc > 1/14){
-    sideScreenAcc = 0;
-    drawScreen(left, t + 2.1);
-    drawScreen(right, t + 4.7);
+  // smooth into radio spec
+  for(let b=0;b<hero.spec.length;b++){
+    const target = specBuf[Math.floor(b*specBuf.length/hero.spec.length)];
+    hero.spec[b] += (target - hero.spec[b]) * 0.22;
   }
+
+  // ---- screen (throttled 30fps)
+  heroScreenAcc += dt;
+  if(heroScreenAcc > 1/30){ heroScreenAcc = 0; drawScreen(hero, t); }
 
   // ---- LED breathing / accent pulse
   const pulse = 0.72 + Math.sin(t*1.9)*0.22 + Math.sin(t*4.7)*0.06;
-  radios.forEach(R=>{
-    R.ledLight.intensity = 0.55 + pulse*0.65;
-    R.mats.accent.emissiveIntensity = 1.45 + pulse*0.85;
-    R.screenPlane.material.opacity = 0.985 + Math.sin(t*11.0)*0.012;
-  });
+  hero.ledLight.intensity = 0.55 + pulse*0.65;
+  hero.mats.accent.emissiveIntensity = 1.45 + pulse*0.85;
+  hero.screenPlane.material.opacity = 0.985 + Math.sin(t*11.0)*0.012;
 
   // ---- mix tween
   if(mixTween){
@@ -2518,29 +2355,6 @@ function animate(){
     hero.accent.set(mixTween.to.accent);
     if(mixTween.t >= 1) mixTween = null;
   }
-
-  // ---- animatrice animation
-  const A = animatrice.userData;
-  const level = specBuf.reduce((a,b)=>a+b,0)/specBuf.length;
-  const talk = Lea.mouth;
-  armTalk += ((Lea.active ? 1 : 0) - armTalk) * Math.min(1, dt*5);
-  const k = armTalk;
-  A.head.rotation.y = Math.sin(t*0.55)*0.26 + 0.05 - k*0.10;
-  A.head.rotation.x = Math.sin(t*0.82)*0.055 + k*Math.sin(t*2.3)*0.035;
-  A.head.rotation.z = Math.sin(t*0.44)*0.05;
-  A.torso.scale.y = 1 + Math.sin(t*1.55)*0.014;
-  A.torso.scale.x = 1 + Math.sin(t*1.55+1.2)*0.008;
-  A.skirt.rotation.y = Math.sin(t*0.32)*0.05;
-  A.armL.rotation.z = -0.36 + Math.sin(t*1.05)*0.20;
-  A.armL.rotation.x = Math.sin(t*0.86)*0.24 - 0.12;
-  A.armL.userData.elbow.rotation.x = -0.62 + Math.sin(t*1.35)*0.30;
-  A.armL.userData.elbow.rotation.z = 0.22 + Math.sin(t*0.9)*0.12;
-  A.armR.rotation.z = (0.30 + Math.sin(t*0.75)*0.06)*(1-k) + 0.14*k;
-  A.armR.rotation.x = (-0.34 + Math.sin(t*1.18)*0.08)*(1-k) + (-0.70 - talk*0.06)*k;
-  A.armR.userData.elbow.rotation.x = (-1.42 + Math.sin(t*1.3)*0.10)*(1-k) + (-1.86 + Math.sin(t*9.5)*0.06*talk)*k;
-  A.mouth.scale.set(1 + talk*0.9, 1 + talk*1.9, 1);
-  A.lips.scale.set(1, 0.42 + talk*0.30, 0.5);
-  animatrice.position.y = -1.115 + Math.sin(t*1.55)*0.012;
 
   // ---- particles drift
   const arr = pGeo.attributes.position.array;
